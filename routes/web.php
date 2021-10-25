@@ -23,3 +23,12 @@ Route::get('/messages', 'App\Http\Controllers\MessagesController@getMessages');
 
 
 Route::post('/contact/submit', 'App\Http\Controllers\MessagesController@submit');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::namespace('App\Http\Controllers\Admin')->prefix('admin')->name('admin.')->group(function(){
+  Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
+  
+});
