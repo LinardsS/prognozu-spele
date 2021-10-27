@@ -17,9 +17,6 @@
             @include('inc.messages')
             @yield('content')
         </div>
-        <div class="col-md-8 col-lg-4">
-            @include('inc.sidebar')
-        </div>
       </div>
     </div>
     <footer id="footer" class="text-center">
