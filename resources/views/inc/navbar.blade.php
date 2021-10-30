@@ -9,8 +9,8 @@
         <li class="{{Request::is('/') ? 'active' : ''}}">
           <a class="nav-link" aria-current="page" href="/">Home</a>
         </li>
-        <li class="{{Request::is('about') ? 'active' : ''}}">
-          <a class="nav-link" href="/about">About</a>
+        <li class="{{Request::is('leagues') ? 'active' : ''}}">
+          <a class="nav-link" href="/leagues">Leagues</a>
         </li>
         <li class="{{Request::is('contact') ? 'active' : ''}}">
           <a class="nav-link" href="/contact">Contact</a>
@@ -22,7 +22,7 @@
           <a class="nav-link" href="{{route('login')}}">Login</a>
         </li>
         <li>
-          <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+          <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
               Logout
           </a>
           <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
