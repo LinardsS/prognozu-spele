@@ -18,26 +18,29 @@
         <li class="{{Request::is('admin/users') ? 'active' : ''}}">
           <a class="nav-link" href="{{route('admin.users.index')}}">Users</a>
         </li>
-        <li class="{{Request::is('/login') ? 'active' : ''}}">
-          <a class="nav-link" href="{{route('login')}}">Login</a>
-        </li>
-        <li>
-          <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-              Logout
-          </a>
-          <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
-              {{ csrf_field() }}
-          </form>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-            <ul class="dropdown-menu" aria-labelledby="dropdown03">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
       </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            @if (Auth::check())
+            <li>
+              <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+                  Logout
+              </a>
+              <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
+              </form>
+            </li>
+            @else
+            <li class="{{Request::is('/login') ? 'active' : ''}}">
+              <a class="nav-link" href="{{route('login')}}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('register')}}">Register</a>
+            </li>
+            @endif
+
+        </ul>
     </div>
   </div>
 </nav>
