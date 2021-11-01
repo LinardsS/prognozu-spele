@@ -15,8 +15,8 @@ class CreateRoleUserTable extends Migration
     {
         Schema::create('role_user', function (Blueprint $table) {
             $table->id();
-            $table->integer('role_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +28,8 @@ class CreateRoleUserTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('role_user');
+        Schema::enableForeignKeyConstraints();
     }
 }
