@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\League;
 use DB;
 
 class UsersTableSeeder extends Seeder
@@ -19,6 +20,7 @@ class UsersTableSeeder extends Seeder
     {
         User::truncate();
         DB::table('role_user')->truncate();
+        DB::table('league_user')->truncate();
 
         $adminRole = Role::where('name', 'admin')->first();
         $userRole = Role::where('name', 'user')->first();
@@ -43,5 +45,9 @@ class UsersTableSeeder extends Seeder
         $admin->roles()->attach($adminRole);
         $user->roles()->attach($userRole);
         $owner->roles()->attach($ownerRole);
+
+        $testLeague = League::where('name', 'NHL testa līga')->first();
+
+        $admin->leagues()->attach($testLeague);
     }
 }

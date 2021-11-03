@@ -53,7 +53,7 @@ class User extends Authenticatable
 
       return false;
     }
-    
+
     public function hasRole($role){
       if($this->roles()->where('name', $role)->first()){
         return true;
@@ -61,4 +61,9 @@ class User extends Authenticatable
 
       return false;
     }
+
+    public function leagues(){
+      return $this->belongsToMany('App\Models\League');
+    }
+
 }

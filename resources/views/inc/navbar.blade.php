@@ -10,7 +10,7 @@
           <a class="nav-link" aria-current="page" href="/">Home</a>
         </li>
         <li class="{{Request::is('leagues') ? 'active' : ''}}">
-          <a class="nav-link" href="/leagues">Leagues</a>
+          <a class="nav-link" href="{{route('leagues.index')}}">Leagues</a>
         </li>
         <li class="{{Request::is('contact') ? 'active' : ''}}">
           <a class="nav-link" href="/contact">Contact</a>

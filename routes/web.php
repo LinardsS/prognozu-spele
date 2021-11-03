@@ -31,3 +31,7 @@ Route::namespace('App\Http\Controllers\Admin')->prefix('admin')->name('admin.')-
   Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
 
 });
+
+Route::namespace('App\Http\Controllers\League')->group(function(){
+  Route::resource('/leagues', 'LeaguesController');
+});
