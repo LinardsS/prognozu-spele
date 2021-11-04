@@ -20,5 +20,9 @@ class LeaguesTableSeeder extends Seeder
                         'description' => 'Testa teksts',
                         'scoring' => 'H2H',
                         'private' => false]);
+        League::create(['name' => 'Draugu līga',
+                        'description' => 'Šeit spēlē draugi',
+                        'scoring' => 'Classic',
+                        'private' => false]);
     }
 }

@@ -21,7 +21,8 @@ class LeaguesController extends Controller
     public function index()
     {
         $leagues = League::all();
-        return view('leagues.index')->with('leagues', $leagues);
+        $user = auth()->user();
+        return view('leagues.index')->with(['leagues' => $leagues, 'user' => $user]);
     }
 
     /**
@@ -51,9 +52,10 @@ class LeaguesController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(League $league, User $user)
     {
-        //
+        $users = User::all();
+        return view('leagues.single')->with(['league' => $league, 'users' => $users]);
     }
 
     /**

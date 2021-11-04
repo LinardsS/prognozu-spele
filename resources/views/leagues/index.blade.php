@@ -17,10 +17,12 @@
   <div class="card-body">
     @foreach($leagues as $league)
       @if($league->private != true)
-        <a href="/leagues/{{$league->id}}">
+        <a href="{{route('leagues.show', $league)}}">
           {{$league->name}} - {{$league->description}}
         </a>
       @endif
     @endforeach
   </div>
+  Lietotāja <strong>{{$user->name}}</strong> līgas:
+  {{ implode(', ', $user->leagues()->get()->pluck('name')->toArray())}}
 @endsection
