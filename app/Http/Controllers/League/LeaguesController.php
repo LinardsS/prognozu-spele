@@ -55,7 +55,8 @@ class LeaguesController extends Controller
     public function show(League $league, User $user)
     {
         $users = User::all();
-        return view('leagues.single')->with(['league' => $league, 'users' => $users]);
+        $user = auth()->user();
+        return view('leagues.single')->with(['league' => $league, 'users' => $users, 'user' => $user]);
     }
 
     /**
@@ -90,5 +91,12 @@ class LeaguesController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    public function join(Request $request, League $league)
+    {
+      $user = User::find($request->user);
+      $league->users()->save($user);
+      return view('home');
     }
 }

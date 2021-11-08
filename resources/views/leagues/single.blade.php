@@ -14,6 +14,15 @@
     @endif
      privāta
   </p>
+  <div class="container">
+    <form method="POST" action="{{route('leagues.join', $league)}}">
+      @csrf
+      <input type="hidden" name="user" value="{{$user->id}}"> </input>
+      <button type="submit" class="btn btn-primary float-right">Pievienoties līgai</button>
+    </form>
+  </div>
+  <br>
+  <br>
   <table class="table">
   <thead class="thead-light">
     <tr>
