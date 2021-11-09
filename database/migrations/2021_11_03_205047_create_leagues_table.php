@@ -16,9 +16,12 @@ class CreateLeaguesTable extends Migration
         Schema::create('leagues', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('maxPlayers');
             $table->text('description');
             $table->string('scoring');
             $table->boolean('private');
+            $table->string('predictionType');
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

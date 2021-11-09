@@ -32,7 +32,7 @@ class LeaguesController extends Controller
      */
     public function create()
     {
-        //
+        return view('leagues.create');
     }
 
     /**
@@ -43,7 +43,7 @@ class LeaguesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      //
     }
 
     /**
@@ -98,5 +98,32 @@ class LeaguesController extends Controller
       $user = User::find($request->user);
       $league->users()->save($user);
       return view('home');
+    }
+
+    public function submit(Request $request)
+    {
+      $this->validate($request, [
+        'name' => 'required',
+        'maxPlayers' => 'required',
+        'scoring' => 'required',
+        'private' => 'required',
+        'predictionType' => 'required'
+      ]);
+      // Create new league
+      $league = new League;
+      $league->name = $request->input('name');
+      $league->maxPlayers = $request->input('maxPlayers');
+      $league->description = $request->input('description');
+      $league->scoring = $request->input('scoring');
+      $league->private = $request->input('private');
+      $league->predictionType = $request->input('predictionType');
+      //owner of league = > logged in user
+      $user = auth()->user();
+      $league->owner_id = $user->id;
+      //Save message
+      $league->save();
+
+      //Redirect
+      return redirect('/')->withSuccess('Līga veiksmīgi izveidota');
     }
 }

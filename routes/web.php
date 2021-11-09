@@ -36,4 +36,5 @@ Route::namespace('App\Http\Controllers\League')->group(function(){
   Route::resource('/leagues', 'LeaguesController');
 });
 
-Route::post('/leagues/join/{league}', 'App\Http\Controllers\League\LeaguesController@join')->name('leagues.join');;
+Route::post('/leagues/join/{league}', 'App\Http\Controllers\League\LeaguesController@join')->name('leagues.join');
+Route::post('/leagues', 'App\Http\Controllers\League\LeaguesController@submit')->name('leagues.submit');
