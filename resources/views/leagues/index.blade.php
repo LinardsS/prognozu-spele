@@ -9,7 +9,7 @@
     </a>
   </div>
   <div class="card-body">
-    <a href="">
+    <a href="{{route('leagues.joinKey')}}">
       <button type="button" class="btn btn-primary float-right">Pievienoties līgai</button>
     </a>
   </div>

@@ -22,6 +22,7 @@ class CreateLeaguesTable extends Migration
             $table->boolean('private');
             $table->string('predictionType');
             $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+            $table->string('join_key');
             $table->timestamps();
         });
     }

@@ -31,10 +31,12 @@ Route::namespace('App\Http\Controllers\Admin')->prefix('admin')->name('admin.')-
   Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
 
 });
+Route::post('/leagues/join/{league}', 'App\Http\Controllers\League\LeaguesController@join')->name('leagues.join');
+Route::post('/leagues/leave/{league}', 'App\Http\Controllers\League\LeaguesController@leave')->name('leagues.leave');
+Route::post('/leagues', 'App\Http\Controllers\League\LeaguesController@submit')->name('leagues.submit');
+Route::get('/leagues/joinKey', 'App\Http\Controllers\League\LeaguesController@joinKey')->name('leagues.joinKey');
+Route::post('/leagues/joinByKey', 'App\Http\Controllers\League\LeaguesController@joinByKey')->name('leagues.joinByKey');
 
 Route::namespace('App\Http\Controllers\League')->group(function(){
   Route::resource('/leagues', 'LeaguesController');
 });
-
-Route::post('/leagues/join/{league}', 'App\Http\Controllers\League\LeaguesController@join')->name('leagues.join');
-Route::post('/leagues', 'App\Http\Controllers\League\LeaguesController@submit')->name('leagues.submit');

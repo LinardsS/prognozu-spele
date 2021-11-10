@@ -22,13 +22,15 @@ class LeaguesTableSeeder extends Seeder
                         'scoring' => 'H2H',
                         'private' => false,
                         'predictionType' => 'Win',
-                        'owner_id' => 1]);
+                        'owner_id' => 1,
+                        'join_key' => \Str::random(6)]);
         League::create(['name' => 'Draugu līga',
                         'maxPlayers' => 10,
                         'description' => 'Šeit spēlē draugi',
                         'scoring' => 'Classic',
                         'private' => false,
                         'predictionType' => 'Score',
-                        'owner_id' => 1]);
+                        'owner_id' => 1,
+                        'join_key' => \Str::random(6)]);
     }
 }

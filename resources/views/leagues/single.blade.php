@@ -22,6 +22,14 @@
         <button type="submit" class="btn btn-primary float-right">Pievienoties līgai</button>
       </form>
     </div>
+  @else
+  <div class="container">
+    <form method="POST" action="{{route('leagues.leave', $league)}}">
+      @csrf
+      <input type="hidden" name="user" value="{{$user->id}}"> </input>
+      <button type="submit" class="btn btn-danger float-right">Pamest līgu</button>
+    </form>
+  </div>
   @endif
   <br>
   <br>

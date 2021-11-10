@@ -126,4 +126,36 @@ class LeaguesController extends Controller
       //Redirect
       return redirect('/')->withSuccess('Līga veiksmīgi izveidota');
     }
+
+    public function joinKey()
+    {
+      return view('leagues.join');
+    }
+
+    public function joinByKey(Request $request)
+    {
+      $this->validate($request, [
+        'key' => 'required',
+      ]);
+      $joinKey = $request->input('key');
+      $league = League::where('join_key', $joinKey)->first();
+
+      if($league){
+        $user = auth()->user();
+        $league->users()->save($user);
+
+        $users = User::all();
+        return view('leagues.single')->with(['league' => $league, 'users' => $users, 'user' => $user]);
+      }
+      else{
+        return redirect('/leagues/joinKey')->withErrors(['msg' => 'Ievadītais līgas kods neeksistē!']);
+      }
+    }
+
+    public function leave(Request $request, League $league)
+    {
+      $user = User::find($request->user);
+      $user->leagues()->detach($league);
+      return redirect('/leagues')->withSuccess('Līga veiksmīgi pamesta!');
+    }
 }
