@@ -20,6 +20,7 @@
         <a href="{{route('leagues.show', $league)}}">
           {{$league->name}} - {{$league->description}}
         </a>
+        <br>
       @endif
     @endforeach
   </div>

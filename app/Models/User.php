@@ -66,4 +66,11 @@ class User extends Authenticatable
       return $this->belongsToMany('App\Models\League');
     }
 
+    public function isInLeague($league){
+      if($this->leagues()->where('league_id', $league)->first()){
+        return true;
+      }
+
+      return false;
+    }
 }
