@@ -97,7 +97,8 @@ class LeaguesController extends Controller
     {
       $user = User::find($request->user);
       $league->users()->save($user);
-      return view('home');
+      $users = User::all();
+      return view('leagues.single')->with(['league' => $league, 'users' => $users, 'user' => $user]);
     }
 
     public function submit(Request $request)

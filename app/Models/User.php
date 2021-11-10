@@ -73,4 +73,20 @@ class User extends Authenticatable
 
       return false;
     }
+
+    public function isLeagueOwner($league)
+    {
+      $lig = $this->leagues()->where('league_id', $league)->first();
+      if($lig){
+        if($lig->owner_id == $this->id){
+          return true;
+        }
+        else{
+          return false;
+        }
+      }
+      else{
+        return false;
+      }
+    }
 }

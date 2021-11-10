@@ -14,6 +14,9 @@
     @endif
      privāta
   </p>
+  @if($user->isLeagueOwner($league->id))
+  <p><strong>Līgas atslēga: </strong> {{$league->join_key}}</p>
+  @endif
   @if(!$user->isInLeague($league->id))
     <div class="container">
       <form method="POST" action="{{route('leagues.join', $league)}}">
