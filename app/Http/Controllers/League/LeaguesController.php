@@ -118,6 +118,7 @@ class LeaguesController extends Controller
       $league->scoring = $request->input('scoring');
       $league->private = $request->input('private');
       $league->predictionType = $request->input('predictionType');
+      $league->join_key = \Str::random(6);
       //owner of league = > logged in user
       $user = auth()->user();
       $league->owner_id = $user->id;
