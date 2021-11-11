@@ -54,9 +54,8 @@ class LeaguesController extends Controller
      */
     public function show(League $league, User $user)
     {
-        $users = User::all();
         $user = auth()->user();
-        return view('leagues.single')->with(['league' => $league, 'users' => $users, 'user' => $user]);
+        return view('leagues.single')->with(['league' => $league, 'user' => $user]);
     }
 
     /**
@@ -97,8 +96,7 @@ class LeaguesController extends Controller
     {
       $user = User::find($request->user);
       $league->users()->save($user);
-      $users = User::all();
-      return view('leagues.single')->with(['league' => $league, 'users' => $users, 'user' => $user]);
+      return view('leagues.single')->with(['league' => $league, 'user' => $user]);
     }
 
     public function submit(Request $request)
@@ -146,8 +144,7 @@ class LeaguesController extends Controller
         $user = auth()->user();
         $league->users()->save($user);
 
-        $users = User::all();
-        return view('leagues.single')->with(['league' => $league, 'users' => $users, 'user' => $user]);
+        return view('leagues.single')->with(['league' => $league, 'user' => $user]);
       }
       else{
         return redirect('/leagues/joinKey')->withErrors(['msg' => 'Ievadītais līgas kods neeksistē!']);

@@ -45,12 +45,14 @@
     </tr>
   </thead>
   <tbody>
-    <?php $i = 0; ?>
+    <?php $i = 0;
+      $users = $league->getUsers();
+     ?>
     @foreach($users as $user)
     <tr>
       <th scope="row">{{$i=$i+1}}</th>
-      <td><a href="{{route('admin.users.edit', $user->id)}}">{{$user->name}}</a></td>
-      <td>{{305 - $user->id}}</td>
+      <td><a href="{{route('admin.users.edit', $user['id'])}}">{{$user['name']}}</a></td>
+      <td>{{305 - $user['id']}}</td>
     </tr>
     @endforeach
   </tbody>
