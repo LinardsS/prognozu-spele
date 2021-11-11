@@ -89,4 +89,19 @@ class User extends Authenticatable
         return false;
       }
     }
+
+    public function getLeagues()
+    {
+      $leagues = $this->leagues()->where('league_id', '>', 0)->get();
+      $array = [];
+
+      foreach($leagues as $league){
+        $subarray = [];
+        $subarray['name'] = $league['name'];
+        $subarray['id'] = $league['id'];
+        $subarray['description'] = $league['description'];
+        array_push($array, $subarray);
+      }
+      return $array;
+    }
 }

@@ -13,17 +13,57 @@
       <button type="button" class="btn btn-primary float-right">Pievienoties līgai</button>
     </a>
   </div>
+
+  <h2>Lietotāja <strong>{{$user->name}}</strong> līgas</h2>
+  <div class="card-body">
+    <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Līgas nosaukums</th>
+        <th scope="col">Līgas apraksts</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <?php $userLeagues = $user->getLeagues(); ?>
+      @foreach($userLeagues as $userLeague)
+        <tr>
+          <td>
+            <a href="{{route('leagues.show', $userLeague['id'])}}">
+              {{$userLeague['name']}}
+            </a>
+          </td>
+          <td>{{$userLeague['description']}}</td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
+  </div>
+  <br>
   <h2>Publiskās līgas</h2>
   <div class="card-body">
-    @foreach($leagues as $league)
-      @if($league->private != true)
-        <a href="{{route('leagues.show', $league)}}">
-          {{$league->name}} - {{$league->description}}
-        </a>
-        <br>
-      @endif
-    @endforeach
+    <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Līgas nosaukums</th>
+        <th scope="col">Līgas apraksts</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @foreach($leagues as $league)
+        @if($league->private != true)
+        <tr>
+          <td>
+            <a href="{{route('leagues.show', $league)}}">
+              {{$league->name}}
+            </a>
+          </td>
+          <td>{{$league->description}}</td>
+        </tr>
+        @endif
+      @endforeach
+    </tbody>
+  </table>
   </div>
-  Lietotāja <strong>{{$user->name}}</strong> līgas:
-  {{ implode(', ', $user->leagues()->get()->pluck('name')->toArray())}}
 @endsection
