@@ -117,14 +117,17 @@ class LeaguesController extends Controller
       $league->private = $request->input('private');
       $league->predictionType = $request->input('predictionType');
       $league->join_key = \Str::random(6);
+
       //owner of league = > logged in user
       $user = auth()->user();
       $league->owner_id = $user->id;
       //Save message
       $league->save();
 
+      //add creator of league to league
+      $league->users()->save($user);
       //Redirect
-      return redirect('/')->withSuccess('Līga veiksmīgi izveidota');
+      return redirect()->route('leagues.index')->withSuccess('Līga veiksmīgi izveidota');
     }
 
     public function joinKey()
