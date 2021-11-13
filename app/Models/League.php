@@ -28,4 +28,18 @@ class League extends Model
       }
       return $array;
     }
+
+    public function games()
+    {
+      return $this->belongsToMany('App\Models\Game');
+    }
+
+    public function isPrivate()
+    {
+      if($this->private == '1'){
+        return true;
+      }
+      return false;
+    }
+
 }

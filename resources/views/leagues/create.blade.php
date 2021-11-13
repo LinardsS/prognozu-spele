@@ -25,7 +25,7 @@
     </div>
     <div class="form-group">
       {{Form::label('predictionType', 'Prognožu veids');}}
-      {{Form::select('predictionType', array('win' => 'Uzvarētājs', 'score' => 'Rezultāts'));}}
+      {{Form::select('predictionType', array('Win' => 'Uzvarētājs', 'Score' => 'Rezultāts'));}}
     </div>
 
     <div>

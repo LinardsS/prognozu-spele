@@ -18,6 +18,7 @@
   <p><strong>Līgas atslēga: </strong> {{$league->join_key}}</p>
   @endif
   @if(!$user->isInLeague($league->id))
+    @if(!$league->isPrivate())
     <div class="container">
       <form method="POST" action="{{route('leagues.join', $league)}}">
         @csrf
@@ -25,6 +26,7 @@
         <button type="submit" class="btn btn-primary float-right">Pievienoties līgai</button>
       </form>
     </div>
+    @endif
   @else
   <div class="container">
     <form method="POST" action="{{route('leagues.leave', $league)}}">
