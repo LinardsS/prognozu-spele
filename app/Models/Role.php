@@ -12,4 +12,9 @@ class Role extends Model
     {
       return $this->belongsToMany('App\User');
     }
+
+    public function leagues()
+    {
+      return $this->belongsToMany('App\Models\League');
+    }
 }

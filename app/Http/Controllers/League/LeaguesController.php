@@ -160,4 +160,10 @@ class LeaguesController extends Controller
       $user->leagues()->detach($league);
       return redirect('/leagues')->withSuccess('Līga veiksmīgi pamesta!');
     }
+
+    public function showGames(League $league)
+    {
+      $games = $league->games()->get();
+      return view('leagues.games')->with(['league' => $league, 'games' => $games]);
+    }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLeagueGameTable extends Migration
+class CreateGameLeagueTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateLeagueGameTable extends Migration
      */
     public function up()
     {
-        Schema::create('league_game', function (Blueprint $table) {
+        Schema::create('game_league', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('league_id')->constrained('leagues')->onDelete('cascade');
             $table->foreignId('game_id')->constrained('games')->onDelete('cascade');
+            $table->foreignId('league_id')->constrained('leagues')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,8 +28,8 @@ class CreateLeagueGameTable extends Migration
      */
     public function down()
     {
-      Schema::disableForeignKeyConstraints();
-      Schema::dropIfExists('league_game');
-      Schema::enableForeignKeyConstraints();
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('game_league');
+        Schema::enableForeignKeyConstraints();
     }
 }

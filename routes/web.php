@@ -36,6 +36,7 @@ Route::post('/leagues/leave/{league}', 'App\Http\Controllers\League\LeaguesContr
 Route::post('/leagues/submit', 'App\Http\Controllers\League\LeaguesController@submit')->name('leagues.submit');
 Route::get('/leagues/joinKey', 'App\Http\Controllers\League\LeaguesController@joinKey')->name('leagues.joinKey');
 Route::post('/leagues/joinByKey', 'App\Http\Controllers\League\LeaguesController@joinByKey')->name('leagues.joinByKey');
+Route::get('/leagues/{league}/games', 'App\Http\Controllers\League\LeaguesController@showGames')->name('leagues.games');
 
 Route::namespace('App\Http\Controllers\League')->group(function(){
   Route::resource('/leagues', 'LeaguesController');

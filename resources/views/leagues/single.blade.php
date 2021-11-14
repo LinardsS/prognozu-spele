@@ -29,6 +29,7 @@
     @endif
   @else
   <div class="container">
+    <a href="{{route('leagues.games', $league)}}"><button type="button" class="btn btn-primary float-left">Spēles</button></a>
     <form method="POST" action="{{route('leagues.leave', $league)}}">
       @csrf
       <input type="hidden" name="user" value="{{$user->id}}"> </input>
