@@ -104,4 +104,9 @@ class User extends Authenticatable
       }
       return $array;
     }
+
+    public function predictions()
+    {
+      return $this->hasMany('App\Models\Prediction');
+    }
 }

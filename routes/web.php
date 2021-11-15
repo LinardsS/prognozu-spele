@@ -41,3 +41,7 @@ Route::get('/leagues/{league}/games', 'App\Http\Controllers\League\LeaguesContro
 Route::namespace('App\Http\Controllers\League')->group(function(){
   Route::resource('/leagues', 'LeaguesController');
 });
+
+Route::namespace('App\Http\Controllers')->group(function(){
+  Route::resource('/predictions', 'PredictionsController');
+});
