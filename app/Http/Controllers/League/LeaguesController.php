@@ -95,8 +95,13 @@ class LeaguesController extends Controller
     public function join(Request $request, League $league)
     {
       $user = User::find($request->user);
-      $league->users()->save($user);
-      return view('leagues.single')->with(['league' => $league, 'user' => $user]);
+      if($league->countMembers() == $league->maxPlayers){
+        return redirect('/leagues')->withErrors(['msg' => 'Līgai nevar pievienoties, jo tā sasniegusi maksimālo spēlētāju skaitu!']);
+      }
+      else{
+        $league->users()->save($user);
+        return view('leagues.single')->with(['league' => $league, 'user' => $user]);
+      }
     }
 
     public function submit(Request $request)
@@ -144,10 +149,15 @@ class LeaguesController extends Controller
       $league = League::where('join_key', $joinKey)->first();
 
       if($league){
-        $user = auth()->user();
-        $league->users()->save($user);
+        if($league->countMembers() == $league->maxPlayers){
+          return redirect('/leagues')->withErrors(['msg' => 'Līgai nevar pievienoties, jo tā sasniegusi maksimālo spēlētāju skaitu!']);
+        }
+        else{
+          $user = auth()->user();
+          $league->users()->save($user);
 
-        return view('leagues.single')->with(['league' => $league, 'user' => $user]);
+          return view('leagues.single')->with(['league' => $league, 'user' => $user]);
+        }
       }
       else{
         return redirect('/leagues/joinKey')->withErrors(['msg' => 'Ievadītais līgas kods neeksistē!']);

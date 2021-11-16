@@ -5,6 +5,7 @@
 
   <p><strong>Apraksts: </strong>{{$league->description}}</p>
   <p><strong>Līgas punktu skaitīšanas sistēma: </strong> {{$league->scoring}}</p>
+  <p><strong>Maksimālais atļautais spēlētāju skaits: </strong> {{$league->maxPlayers}}</p>
   <p>
     Līga
     @if($league->private == false)

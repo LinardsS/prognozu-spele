@@ -42,4 +42,16 @@ class League extends Model
       return false;
     }
 
+    public function countMembers()
+    {
+      $users = $this->users()->where('user_id', '>', 0)->get();
+      $count = 0;
+
+      foreach($users as $user)
+      {
+        $count += 1;
+      }
+
+      return $count;
+    }
 }
