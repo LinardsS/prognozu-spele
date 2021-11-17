@@ -42,6 +42,7 @@ Route::namespace('App\Http\Controllers\League')->group(function(){
   Route::resource('/leagues', 'LeaguesController');
 });
 
+Route::get('/predictions/{league}', 'App\Http\Controllers\PredictionsController@league')->name('predictions.league');
 Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/predictions', 'PredictionsController');
 });

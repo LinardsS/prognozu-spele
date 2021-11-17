@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Prediction;
 use App\Models\Game;
+use App\Models\League;
 use Illuminate\Http\Request;
 
 class PredictionsController extends Controller
@@ -21,8 +22,8 @@ class PredictionsController extends Controller
     {
         $user = auth()->user();
         $predictions = $user->predictions()->get()->toArray();
-        
-        return view('predictions.index')->with(['predictions' => $predictions]);
+        $leagues = $user->getLeagues();
+        return view('predictions.index')->with(['predictions' => $predictions, 'leagues' => $leagues]);
     }
 
     /**
@@ -89,5 +90,13 @@ class PredictionsController extends Controller
     public function destroy(Prediction $prediction)
     {
         //
+    }
+
+    public function league(League $league)
+    {
+      $user = auth()->user();
+      $predictions = $user->predictions()->where('league_id',$league->id)->get()->toArray();
+      $games = $league->games()->where('ended',0)->get();
+      return view('predictions.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
     }
 }

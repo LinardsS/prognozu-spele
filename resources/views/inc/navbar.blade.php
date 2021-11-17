@@ -12,6 +12,9 @@
         <li class="{{Request::is('leagues') ? 'active' : ''}}">
           <a class="nav-link" href="{{route('leagues.index')}}">Leagues</a>
         </li>
+        <li class="{{Request::is('predictions') ? 'active' : ''}}">
+          <a class="nav-link" href="/predictions">Predictions</a>
+        </li>
         <li class="{{Request::is('contact') ? 'active' : ''}}">
           <a class="nav-link" href="/contact">Contact</a>
         </li>
