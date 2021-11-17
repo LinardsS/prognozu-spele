@@ -18,6 +18,7 @@ class CreateGamesTable extends Migration
             $table->string('home_team');
             $table->string('away_team');
             $table->dateTime('start_time');
+            $table->boolean('ended');
             $table->timestamps();
         });
     }

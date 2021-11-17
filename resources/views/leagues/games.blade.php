@@ -21,7 +21,11 @@
         <td>{{$game->id}}</td>
         <td>{{$game->home_team}}</td>
         <td>{{$game->away_team}}</td>
+        @if($game->ended)
         <td>3-2</td>
+        @else
+        <td></td>
+        @endif
         <td>{{$game->start_time}}</td>
       </tr>
       @endif
