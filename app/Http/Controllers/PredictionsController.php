@@ -99,4 +99,26 @@ class PredictionsController extends Controller
       $games = $league->games()->where('ended',0)->get();
       return view('predictions.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
     }
+
+    public function submit(Request $request)
+    {
+      foreach ($request->input('points', []) as $id => $points) {
+        $prediction = Prediction::where(['game_id' => $id, 'user_id' => $request->user_id, 'league_id' => $request->league_id])->first();
+        if($prediction){
+          Prediction::where(['game_id' => $id, 'user_id' => $request->user_id, 'league_id' => $request->league_id])->update($points);
+        }
+        else{
+          if($points['home_team_points'] != null && $points['away_team_points'] != null){
+            $prediction = new Prediction;
+            $prediction->home_team_points = $points['home_team_points'];
+            $prediction->away_team_points = $points['away_team_points'];
+            $prediction->user_id = $request->user_id;
+            $prediction->league_id = $request->league_id;
+            $prediction->game_id = $id;
+            $prediction->save();
+          }
+        }
+      }
+      return redirect()->route('predictions.index')->withSuccess('Prognozes veiksmīgi saglabātas!');
+    }
 }
