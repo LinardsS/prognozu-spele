@@ -5,6 +5,7 @@ namespace App\Http\Controllers\League;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\League;
+use App\Models\Game;
 use Illuminate\Http\Request;
 
 class LeaguesController extends Controller
@@ -175,5 +176,37 @@ class LeaguesController extends Controller
     {
       $games = $league->games()->get();
       return view('leagues.games')->with(['league' => $league, 'games' => $games]);
+    }
+
+    public function addGames(League $league)
+    {
+      return view('leagues.addGames')->with(['league' => $league]);
+    }
+
+    public function submitGame(Request $request)
+    {
+      $this->validate($request, [
+        'home_team' => 'required',
+        'away_team' => 'required',
+        'start_date' => 'required',
+        'start_time' => 'required',
+      ]);
+
+      $game = new Game;
+      $game->home_team = $request->input('home_team');
+      $game->away_team = $request->input('away_team');
+      //combine start date with start time to create start_time
+      $date = $request->input('start_date');
+      $time = $request->input('start_time');
+      $start_time = date('Y-m-d H:i:s', strtotime("$date $time"));
+      $game->start_time = $start_time;
+
+      $game->ended = false;
+      $game->save();
+
+      //add relation between game and league
+      $league = League::find($request->input('league_id'))->first();
+      $league->games()->save($game);
+      return redirect()->route('leagues.addGames', $league)->withSuccess('Spēle veiksmīgi pievienota!');
     }
 }

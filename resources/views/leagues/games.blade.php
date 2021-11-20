@@ -2,7 +2,13 @@
 
 @section('content')
 <h1>"{{$league->name}}" spēles</h1>
-
+@if(auth()->user()->isLeagueOwner($league->id))
+<div class="card-body">
+  <a href="{{route('leagues.addGames', $league)}}">
+    <button type="button" class="btn btn-primary float-right">Pievienot spēles</button>
+  </a>
+</div>
+@endif
 <div class="card-body">
   <table class="table">
   <thead class="thead-light">
