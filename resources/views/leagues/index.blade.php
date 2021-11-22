@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-  <h1>Līgas</h1>
-  <p> Šeit ies informācija par līgām(sākumā vērs līgu kopskatu)</p>
+  <h1>Prognožu līgas</h1>
   <div class="card-body">
     <a href="{{route('leagues.create')}}">
       <button type="button" class="btn btn-primary float-right">Izveidot līgu</button>

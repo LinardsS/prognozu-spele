@@ -51,12 +51,23 @@
   <tbody>
     <?php $i = 0;
       $users = $league->getUsers();
+      $showDelete = $user->isLeagueOwner($league->id);
+      use App\Models\User;
      ?>
     @foreach($users as $user)
     <tr>
       <th scope="row">{{$i=$i+1}}</th>
       <td><a href="{{route('admin.users.edit', $user['id'])}}">{{$user['name']}}</a></td>
+      @if(!$showDelete)
       <td>{{305 - $user['id']}}</td>
+      @else
+      <td>{{305 - $user['id']}}<form class="" action="{{ route('leagues.deleteUser',[$league, User::find($user['id'])]) }}" method="post">
+        @csrf
+         <button type="submit" class="btn btn-danger" style="float: right;">
+           Dzēst
+         </button>
+      </form></td>
+      @endif
     </tr>
     @endforeach
   </tbody>

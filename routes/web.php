@@ -39,6 +39,7 @@ Route::post('/leagues/joinByKey', 'App\Http\Controllers\League\LeaguesController
 Route::get('/leagues/{league}/games', 'App\Http\Controllers\League\LeaguesController@showGames')->name('leagues.games');
 Route::get('/leagues/{league}/games/add', 'App\Http\Controllers\League\LeaguesController@addGames')->name('leagues.addGames');
 Route::post('/leagues/submitGame', 'App\Http\Controllers\League\LeaguesController@submitGame')->name('leagues.submitGame');
+Route::post('/leagues/{league}/delete/{user}', 'App\Http\Controllers\League\LeaguesController@deleteUser')->name('leagues.deleteUser');
 
 Route::namespace('App\Http\Controllers\League')->group(function(){
   Route::resource('/leagues', 'LeaguesController');

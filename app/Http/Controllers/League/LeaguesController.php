@@ -209,4 +209,12 @@ class LeaguesController extends Controller
       $league->games()->save($game);
       return redirect()->route('leagues.addGames', $league)->withSuccess('Spēle veiksmīgi pievienota!');
     }
+
+    public function deleteUser(League $league, User $user)
+    {
+        $user->leagues()->where('league_id', $league->id)->delete();
+
+        $owner = auth()->user();
+        return redirect()->route('leagues.show', $league)->withSuccess('Lietotājs veiksmīgi dzēsts!');
+    }
 }
