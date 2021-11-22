@@ -212,7 +212,7 @@ class LeaguesController extends Controller
 
     public function deleteUser(League $league, User $user)
     {
-        $user->leagues()->where('league_id', $league->id)->delete();
+        $league->users()->where('user_id', $user->id)->detach($user);
 
         $owner = auth()->user();
         return redirect()->route('leagues.show', $league)->withSuccess('Lietotājs veiksmīgi dzēsts!');
