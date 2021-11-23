@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<?php use App\Models\Game; ?>
 <h1>"{{$league->name}}" spēles</h1>
 @if(auth()->user()->isLeagueOwner($league->id))
 <div class="card-body">
@@ -28,7 +29,12 @@
         <td>{{$game->home_team}}</td>
         <td>{{$game->away_team}}</td>
         @if($game->ended)
-        <td>3-2</td>
+        <?php $result = $game->result()->first(); ?>
+          @if($result)
+          <td>{{$result->home_team_points}}-{{$result->away_team_points}}</td>
+          @else
+          <td></td>
+          @endif
         @else
         <td></td>
         @endif

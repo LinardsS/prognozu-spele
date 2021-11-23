@@ -17,4 +17,9 @@ class Game extends Model
     {
       return $this->predictions()->where([['user_id', '=', $user->id], ['league_id', '=', $league->id]])->get();
     }
+
+    public function result()
+    {
+        return $this->hasOne('App\Models\Result');
+    }
 }
