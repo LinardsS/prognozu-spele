@@ -56,4 +56,5 @@ Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/results', 'ResultsController');
 });
 
-Route::get('/games/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames');
+Route::get('/games/uploadNHL/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames');
+Route::get('/games/attach', 'App\Http\Controllers\GamesController@attachNHLGames')->name('games.attach');

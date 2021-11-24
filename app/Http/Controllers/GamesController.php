@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\League;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -37,6 +38,18 @@ class GamesController extends Controller
                         'league_type' => "NHL"]);
         }
       }
-      return $result;
     }
+
+    public function attachNHLGames()
+    {
+      $league = League::find(1)->first();
+      for($x = 1; $x <= 200; $x++){
+        $game = Game::where('id', $x)->first();
+        if($game){
+          $league->games()->attach($game);
+        }
+      }
+
+    }
+
 }
