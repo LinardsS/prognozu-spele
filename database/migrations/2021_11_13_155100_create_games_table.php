@@ -19,6 +19,8 @@ class CreateGamesTable extends Migration
             $table->string('away_team');
             $table->dateTime('start_time');
             $table->boolean('ended');
+            $table->string('external_game_id')->nullable();
+            $table->string('league_type')->nullable();
             $table->timestamps();
         });
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
 
 class GamesController extends Controller
 {
@@ -11,79 +13,30 @@ class GamesController extends Controller
     {
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function uploadNHLGames($startDate, $endDate)
     {
-        //
-    }
+      $schedule = Http::get('http://statsapi.web.nhl.com/api/v1/schedule?startDate=' . $startDate . '&endDate=' . $endDate);
+      $dates = json_decode($schedule)->dates;
+      $result = [];
+      foreach ($dates as $date) {
+        $games = $date->games;
+        foreach($games as $game){
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+          $gameId = strval($game->gamePk);
+          $startDate = $game->gameDate;
+          $startDate = $startDate . '2 hours'; //add 2 hours to match Latvian GMT+2 time
+          $home = $game->teams->home->team->name;
+          $away = $game->teams->away->team->name;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Game $game)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Game $game)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Game $game)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Game $game)
-    {
-        //
+          Game::create(['home_team' => $home,
+                        'away_team' => $away,
+                        'start_time' => date('Y-m-d H:i', strtotime($startDate)),
+                        'ended'      => false,
+                        'external_game_id' => $gameId,
+                        'league_type' => "NHL"]);
+        }
+      }
+      return $result;
     }
 }

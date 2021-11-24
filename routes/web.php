@@ -55,3 +55,5 @@ Route::namespace('App\Http\Controllers')->group(function(){
 Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/results', 'ResultsController');
 });
+
+Route::get('/games/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames');

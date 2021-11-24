@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
+    protected $fillable = ['home_team', 'away_team', 'start_time', 'ended', 'external_game_id', 'league_type'];
     use HasFactory;
     public function predictions()
     {

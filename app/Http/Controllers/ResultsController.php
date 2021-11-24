@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Result;
 use App\Models\Game;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ResultsController extends Controller
 {
@@ -15,8 +16,15 @@ class ResultsController extends Controller
      */
     public function index()
     {
-        $results = Result::all();
-        return $results;
+      //test code to output result of TBL-PHI game from 2021-11-23 from NHL API
+        //$results = Result::all();
+        $date = "2021-11-23";
+        $test = Http::get('http://statsapi.web.nhl.com/api/v1/schedule?date=' . $date);
+        $test = json_decode($test);
+        $teams = $test->dates[0]->games[0]->teams;
+        $home_points = $teams->home->score;
+        $away_points = $teams->away->score;
+        return "Score of the game between " . $teams->home->team->name . " and " . $teams->away->team->name . " was " . $home_points . '-' . $away_points;
     }
 
     /**
