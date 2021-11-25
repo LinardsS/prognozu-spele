@@ -38,7 +38,7 @@
         @else
         <td></td>
         @endif
-        <td>{{$game->start_time}}</td>
+        <td>{{date('d-m-Y H:i', strtotime($game->start_time))}}</td>
       </tr>
       @endif
     @endforeach
