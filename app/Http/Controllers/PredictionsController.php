@@ -96,7 +96,7 @@ class PredictionsController extends Controller
     {
       $user = auth()->user();
       $predictions = $user->predictions()->where('league_id',$league->id)->get()->toArray();
-      $games = $league->games()->where('ended',0)->get();
+      $games = $league->games()->where('ended',0)->paginate(10);
       return view('predictions.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
     }
 
