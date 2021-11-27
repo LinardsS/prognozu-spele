@@ -92,4 +92,10 @@ class ResultsController extends Controller
     {
         //
     }
+
+    public function getPLResult($matchDay){
+      $authKey = "5dd4dc55b02c40888d7fba33f492599b";
+      $response = Http::withHeaders(['X-Auth-Token' => $authKey])->get('http://api.football-data.org/v2/competitions/PL/matches/?matchday' . $matchDay);
+      return $response;
+    }
 }
