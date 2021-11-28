@@ -6,6 +6,8 @@ use App\Models\Prediction;
 use App\Models\Game;
 use App\Models\League;
 use Illuminate\Http\Request;
+use DateTime;
+
 
 class PredictionsController extends Controller
 {
@@ -95,8 +97,9 @@ class PredictionsController extends Controller
     public function league(League $league)
     {
       $user = auth()->user();
-      $predictions = $user->predictions()->where('league_id',$league->id)->get()->toArray();
-      $games = $league->games()->where('ended',0)->paginate(10);
+      $date = new DateTime();
+      $predictions = $user->predictions()->where('league_id', $league->id)->get()->toArray();
+      $games = $league->games()->where('ended',0)->where('start_time', '>', $date)->paginate(10);
       return view('predictions.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
     }
 

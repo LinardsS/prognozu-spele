@@ -21,7 +21,7 @@ class UploadGames
             return $next($request);
         }
         else{
-          return redirect()->back();
+          return redirect()->back()->withErrors(['msg' => 'Jums nav tiesību piekļūt šai lapai!']);
         }
     }
 }
