@@ -12,12 +12,12 @@ class League extends Model
 
     public function users()
     {
-      return $this->belongsToMany('App\Models\User');
+      return $this->belongsToMany('App\Models\User')->withPivot('points')->withTimestamps();
     }
 
     public function getUsers()
     {
-      $users = $this->users()->where('user_id', '>', 0)->get();
+      $users = $this->users()->where('user_id', '>', 0)->orderBy('pivot_points', 'desc')->get();
       $array = [];
 
       foreach($users as $user){
@@ -53,5 +53,10 @@ class League extends Model
       }
 
       return $count;
+    }
+
+    public function getPointsCount($user_id)
+    {
+      return $this->users()->where('user_id', $user_id)->first()->pivot->points;
     }
 }

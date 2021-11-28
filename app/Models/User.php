@@ -63,7 +63,7 @@ class User extends Authenticatable
     }
 
     public function leagues(){
-      return $this->belongsToMany('App\Models\League');
+      return $this->belongsToMany('App\Models\League')->withPivot('points')->withTimestamps();
     }
 
     public function isInLeague($league){

@@ -17,6 +17,7 @@ class CreateLeagueUserTable extends Migration
             $table->id();
             $table->foreignId('league_id')->constrained('leagues')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->integer('points')->default(0);
             $table->timestamps();
         });
     }

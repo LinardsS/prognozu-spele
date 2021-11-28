@@ -59,9 +59,9 @@
       <th scope="row">{{$i=$i+1}}</th>
       <td><a href="{{route('admin.users.edit', $user['id'])}}">{{$user['name']}}</a></td>
       @if(!$showDelete)
-      <td>{{305 - $user['id']}}</td>
+      <td>{{$league->getPointsCount($user['id'])}}</td>
       @else
-      <td>{{305 - $user['id']}}<form class="" action="{{ route('leagues.deleteUser',[$league, User::find($user['id'])]) }}" method="post">
+      <td>{{$league->getPointsCount($user['id'])}}<form class="" action="{{ route('leagues.deleteUser',[$league, User::find($user['id'])]) }}" method="post">
         @csrf
          <button type="submit" class="btn btn-danger" style="float: right;">
            Dzēst
