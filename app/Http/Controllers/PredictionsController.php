@@ -7,7 +7,7 @@ use App\Models\Game;
 use App\Models\League;
 use Illuminate\Http\Request;
 use DateTime;
-
+use DateInterval;
 
 class PredictionsController extends Controller
 {
@@ -98,6 +98,7 @@ class PredictionsController extends Controller
     {
       $user = auth()->user();
       $date = new DateTime();
+      $date->add(new DateInterval('PT2H'));
       $predictions = $user->predictions()->where('league_id', $league->id)->get()->toArray();
       $games = $league->games()->where('ended',0)->where('start_time', '>', $date)->paginate(10);
       return view('predictions.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
