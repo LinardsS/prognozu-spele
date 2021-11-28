@@ -107,6 +107,7 @@ class ResultsController extends Controller
       $request = Http::get('http://statsapi.web.nhl.com/api/v1/schedule?startDate=' . $startDate . '&endDate=' . $endDate);
       $dates = json_decode($request)->dates;
       $output = [];
+      $gameCounter = 0;
       foreach ($dates as $date) {
         $games = $date->games;
         foreach($games as $game){
@@ -130,6 +131,7 @@ class ResultsController extends Controller
 
               //update game status in database to ended = true
               Game::where('external_game_id', $game_pk)->update(['ended'=>true]);
+              $gameCounter += 1;
             }
           }
         /*  Game::create(['home_team' => $home,
@@ -140,5 +142,6 @@ class ResultsController extends Controller
                         'league_type' => "NHL"]);*/
         }
       }
+      return redirect()->route('home')->withSuccess('Rezultāti veiksmīgi ielādēti ' . $gameCounter . ' NHL spēlēm!');
     }
 }
