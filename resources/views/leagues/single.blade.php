@@ -46,12 +46,15 @@
       <th scope="col">Rangs</th>
       <th scope="col">Lietotājs</th>
       <th scope="col">Punktu skaits</th>
+      <?php $showDelete = $user->isLeagueOwner($league->id); ?>
+      @if($showDelete)
+      <th scope="col"></th>
+      @endif
     </tr>
   </thead>
   <tbody>
     <?php $i = 0;
       $users = $league->getUsers();
-      $showDelete = $user->isLeagueOwner($league->id);
       use App\Models\User;
      ?>
     @foreach($users as $user)
@@ -61,12 +64,12 @@
       @if(!$showDelete)
       <td>{{$league->getPointsCount($user['id'])}}</td>
       @else
-      <td>{{$league->getPointsCount($user['id'])}}<form class="" action="{{ route('leagues.deleteUser',[$league, User::find($user['id'])]) }}" method="post">
+      <td>{{$league->getPointsCount($user['id'])}}<form class="" action="{{ route('leagues.deleteUser',[$league, User::find($user['id'])]) }}" method="post"></td>
         @csrf
-         <button type="submit" class="btn btn-danger" style="float: right;">
+        <td><button type="submit" class="btn btn-danger" style="align: right;">
            Dzēst
-         </button>
-      </form></td>
+         </button></td>
+      </form>
       @endif
     </tr>
     @endforeach
