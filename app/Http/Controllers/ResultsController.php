@@ -29,10 +29,12 @@ class ResultsController extends Controller
         return "Score of the game between " . $teams->home->team->name . " and " . $teams->away->team->name . " was " . $home_points . '-' . $away_points;
         */
         $league = League::find(1);
-        $user = User::find(1);
+        $games = $league->games()->where('ended', false)->first();
+      //  $game = Game::where('id', 1)->first()->processResult();
+        /*$user = User::find(1);
         $points = $league->users()->where('user_id', 1)->first()->pivot->points;
-        $league->users()->updateExistingPivot($user, array('points' => $points+1), true);
-        return $league;
+        $league->users()->updateExistingPivot($user, array('points' => $points+1), true);*/
+        return $game;
     }
 
     /**
@@ -107,8 +109,13 @@ class ResultsController extends Controller
       return $response;
     }
 
-    public function getNHLResults($startDate)
+    public function getNHLResults()
     {
+      //to get startDate for request, find earliest unprocessed game in games table for NHL league
+      $league = League::find(1);
+      $firstGame = $league->games()->where('ended', false)->first();
+      $firstGameStart = $firstGame->start_time;
+      $startDate = date('Y-m-d', strtotime("$firstGameStart - 2hours"));
       $endDate = new DateTime();
       $endDate = $endDate->format('Y-m-d');
       $request = Http::get('http://statsapi.web.nhl.com/api/v1/schedule?startDate=' . $startDate . '&endDate=' . $endDate);
@@ -127,6 +134,8 @@ class ResultsController extends Controller
             $away_team_points = $game->teams->away->score;
             $game_pk = strval($game->gamePk);
             $game_id = Game::where('external_game_id', $game_pk)->value('id');
+            $startDate = $game->gameDate;
+            $startDate = $startDate . '2 hours';
             //check if result for this game has already been entered
             if(!Result::where('game_id',$game_id)->first()){
               //create new result entry in database
@@ -134,19 +143,16 @@ class ResultsController extends Controller
                             'away_team'        => $away_team,
                             'home_team_points' => $home_team_points,
                             'away_team_points' => $away_team_points,
-                            'game_id'          => $game_id]);
+                            'game_id'          => $game_id,
+                            'start_time'       => date('Y-m-d H:i', strtotime($startDate))]);
 
               //update game status in database to ended = true
               Game::where('external_game_id', $game_pk)->update(['ended'=>true]);
               $gameCounter += 1;
+              //process all predictions related to this game using the newly retrieved result
+              Game::where('external_game_id', $game_pk)->first()->processResult($home_team_points, $away_team_points);
             }
           }
-        /*  Game::create(['home_team' => $home,
-                        'away_team' => $away,
-                        'start_time' => date('Y-m-d H:i', strtotime($startDate)),
-                        'ended'      => false,
-                        'external_game_id' => $gameId,
-                        'league_type' => "NHL"]);*/
         }
       }
       return redirect()->route('home')->withSuccess('Rezultāti veiksmīgi ielādēti ' . $gameCounter . ' NHL spēlēm!');

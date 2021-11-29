@@ -51,7 +51,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/predictions', 'PredictionsController');
 });
 
-
+Route::get('/results/NHL', 'App\Http\Controllers\ResultsController@getNHLResults')->name('results.NHL')->middleware('upload.games');
 Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/results', 'ResultsController');
 });
@@ -59,4 +59,3 @@ Route::namespace('App\Http\Controllers')->group(function(){
 Route::get('/games/uploadNHL/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames')->middleware('upload.games');
 Route::get('/games/attach', 'App\Http\Controllers\GamesController@attachNHLGames')->name('games.attach')->middleware('upload.games');
 Route::get('/results/PL/{matchDay}', 'App\Http\Controllers\ResultsController@getPLResult')->name('results.premierLeague')->middleware('upload.games');
-Route::get('/results/NHL/{startDate}', 'App\Http\Controllers\ResultsController@getNHLResults')->name('results.NHL')->middleware('upload.games');
