@@ -205,7 +205,7 @@ class LeaguesController extends Controller
       $game->save();
 
       //add relation between game and league
-      $league = League::find($request->input('league_id'))->first();
+      $league = League::where('id',$request->input('league_id'))->first();
       $league->games()->save($game);
       return redirect()->route('leagues.addGames', $league)->withSuccess('Spēle veiksmīgi pievienota!');
     }
