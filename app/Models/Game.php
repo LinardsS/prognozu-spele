@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Prediction;
 use App\Models\User;
 use App\Models\League;
+use App\Models\Result;
 
 class Game extends Model
 {
@@ -50,5 +51,23 @@ class Game extends Model
         }
       }
       return $predictions;
+    }
+
+    public function getResult()
+    {
+      return $result = Result::where('game_id', $this->id)->first();
+    }
+
+    public function evaluateResult($p_home, $p_away, $r_home, $r_away)
+    {
+      $p_gd = $p_home - $p_away; //predicted goal difference
+      $r_gd = $r_home - $r_away; //result goal difference
+
+      if(($p_gd > 0 && $r_gd > 0) || ($p_gd < 0 && $r_gd  < 0)){
+        return true;
+      }
+      else{
+        return false;
+      }
     }
 }

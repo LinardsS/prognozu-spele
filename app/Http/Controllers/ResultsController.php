@@ -12,6 +12,10 @@ use DateTime;
 
 class ResultsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -28,13 +32,11 @@ class ResultsController extends Controller
         $away_points = $teams->away->score;
         return "Score of the game between " . $teams->home->team->name . " and " . $teams->away->team->name . " was " . $home_points . '-' . $away_points;
         */
-        $league = League::find(1);
-        $games = $league->games()->where('ended', false)->first();
-      //  $game = Game::where('id', 1)->first()->processResult();
-        /*$user = User::find(1);
-        $points = $league->users()->where('user_id', 1)->first()->pivot->points;
-        $league->users()->updateExistingPivot($user, array('points' => $points+1), true);*/
-        return $game;
+
+        $user = auth()->user();
+        $predictions = $user->predictions()->get()->toArray();
+        $leagues = $user->getLeagues();
+        return view('results.index')->with(['predictions' => $predictions, 'leagues' => $leagues]);
     }
 
     /**
@@ -156,5 +158,13 @@ class ResultsController extends Controller
         }
       }
       return redirect()->route('home')->withSuccess('Rezultāti veiksmīgi ielādēti ' . $gameCounter . ' NHL spēlēm!');
+    }
+
+    public function league($user, League $league)
+    {
+      $user = User::find($user);
+      $predictions = $user->predictions()->where('league_id', $league->id)->get()->toArray();
+      $games = $league->games()->where('ended',1)->orderBy('start_time', 'desc')->paginate(10);
+      return view('results.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
     }
 }

@@ -7,25 +7,35 @@
     <div class="navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="{{Request::is('/') ? 'active' : ''}}">
-          <a class="nav-link" aria-current="page" href="/">Home</a>
+          <a class="nav-link" aria-current="page" href="/">Sākums</a>
         </li>
         <li class="{{Request::is('leagues') ? 'active' : ''}}">
-          <a class="nav-link" href="{{route('leagues.index')}}">Leagues</a>
+          <a class="nav-link" href="{{route('leagues.index')}}">Līgas</a>
         </li>
         <li class="{{Request::is('predictions') ? 'active' : ''}}">
-          <a class="nav-link" href="/predictions">Predictions</a>
+          <a class="nav-link" href="/predictions">Prognozes</a>
+        </li>
+        <li class="{{Request::is('results') ? 'active' : ''}}">
+          <a class="nav-link" href="{{route('results.index')}}">Rezultāti</a>
         </li>
         <li class="{{Request::is('contact') ? 'active' : ''}}">
-          <a class="nav-link" href="/contact">Contact</a>
+          <a class="nav-link" href="/contact">Saziņa</a>
         </li>
-        <li class="{{Request::is('admin/users') ? 'active' : ''}}">
-          <a class="nav-link" href="{{route('admin.users.index')}}">Users</a>
-        </li>
+        @if(Auth::check())
+          @if(auth()->user()->hasRole('admin'))
+          <li class="{{Request::is('admin/users') ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('admin.users.index')}}">Lietotāji</a>
+          </li>
+          @endif
+        @endif
       </ul>
     </div>
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
         <ul class="navbar-nav ml-auto">
             @if (Auth::check())
+            <li class="{{Request::is('/login') ? 'active' : ''}}">
+              <a class="nav-link disabled">{{auth()->user()->name}}</a>
+            </li>
             <li>
               <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
                   Logout

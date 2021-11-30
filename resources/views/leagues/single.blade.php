@@ -60,7 +60,7 @@
     @foreach($users as $user)
     <tr>
       <th scope="row">{{$i=$i+1}}</th>
-      <td><a href="{{route('admin.users.edit', $user['id'])}}">{{$user['name']}}</a></td>
+      <td><a href="{{route('results.league', ['user' => $user['id'], 'league' => $league['id']])}}">{{$user['name']}}</a></td>
       @if(!$showDelete)
       <td>{{$league->getPointsCount($user['id'])}}</td>
       @else
