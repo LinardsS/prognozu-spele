@@ -37,20 +37,36 @@ class Game extends Model
         $home_prediction = $prediction->home_team_points;
         $away_prediction = $prediction->away_team_points;
         $gd_prediction = $home_prediction - $away_prediction;
+
         //if goal difference same polarity(positive/negative), then winner correctly predicted
         if(($gd_prediction > 0 && $gd > 0) || ($gd_prediction < 0 && $gd < 0)){
-          //if prediction correct, increase user point total
+          $league = League::find($prediction->league_id);
           $user_id = $prediction->user_id;
           $user = User::find($user_id);
-          $league = League::find($prediction->league_id);
           $points = $league->users()->where('user_id', $user_id)->first()->pivot->points;
-          $league->users()->updateExistingPivot($user, array('points' => $points+1), true);
-        }
-        else{
-          $user_id = $prediction->user_id;
+          //determine if league awards points based on picking winner or correct score
+          $predictionType = $league->predictionType;
+          if($predictionType == "Win"){
+            $league->users()->updateExistingPivot($user, array('points' => $points+1), true);
+          }
+          if($predictionType == "Score"){
+            //determine by how much to increase user point total
+
+            //if both team totals predicted correctly, score is predicted correctly, award full points
+            if($home_team_points == $home_prediction && $away_team_points == $away_prediction){
+              $league->users()->updateExistingPivot($user, array('points' => $points+10), true);
+            }
+            //if score not predicted correctly, but goal difference correct, award half of full points
+            else if($gd == $gd_prediction){
+              $league->users()->updateExistingPivot($user, array('points' => $points+5), true);
+            }
+            //award 3 points for correctly picking winner
+            else{
+              $league->users()->updateExistingPivot($user, array('points' => $points+3), true);
+            }
+          }
         }
       }
-      return $predictions;
     }
 
     public function getResult()

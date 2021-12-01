@@ -100,7 +100,7 @@ class PredictionsController extends Controller
       $date = new DateTime();
       $date->add(new DateInterval('PT2H'));
       $predictions = $user->predictions()->where('league_id', $league->id)->get()->toArray();
-      $games = $league->games()->where('ended',0)->where('start_time', '>', $date)->paginate(10);
+      $games = $league->games()->where('ended',0)->where('start_time', '>', $date)->paginate(20);
       return view('predictions.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
     }
 

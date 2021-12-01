@@ -14,7 +14,7 @@ class GamesController extends Controller
     {
         $this->middleware('auth');
     }
-
+    
     public function uploadNHLGames($startDate, $endDate)
     {
       $schedule = Http::get('http://statsapi.web.nhl.com/api/v1/schedule?startDate=' . $startDate . '&endDate=' . $endDate);
@@ -40,16 +40,13 @@ class GamesController extends Controller
       }
     }
 
-    public function attachNHLGames()
+    public function attachNHLGames($league)
     {
-      $league = League::find(1)->first();
-      for($x = 1; $x <= 200; $x++){
-        $game = Game::where('id', $x)->first();
-        if($game){
+      $league = League::where('id',$league)->first();
+      $games = Game::where(['league_type' => 'NHL', 'ended' => 0])->get();
+      foreach($games as $game){
           $league->games()->attach($game);
         }
-      }
-
     }
 
 }
