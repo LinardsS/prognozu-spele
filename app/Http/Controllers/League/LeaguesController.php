@@ -174,7 +174,7 @@ class LeaguesController extends Controller
 
     public function showGames(League $league)
     {
-      $games = $league->games()->paginate(20);
+      $games = $league->games()->orderBy('ended','desc')->orderBy('start_time','desc')->paginate(20);
       return view('leagues.games')->with(['league' => $league, 'games' => $games]);
     }
 
