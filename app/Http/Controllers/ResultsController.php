@@ -117,7 +117,7 @@ class ResultsController extends Controller
       $league = League::find(1);
       $firstGame = $league->games()->where('ended', false)->first();
       $firstGameStart = $firstGame->start_time;
-      $startDate = date('Y-m-d', strtotime("$firstGameStart - 2hours"));
+      $startDate = date('Y-m-d', strtotime("$firstGameStart - 24hours"));
       $endDate = new DateTime();
       $endDate = $endDate->format('Y-m-d');
       $request = Http::get('http://statsapi.web.nhl.com/api/v1/schedule?startDate=' . $startDate . '&endDate=' . $endDate);
