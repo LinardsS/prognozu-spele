@@ -37,6 +37,7 @@ Route::post('/leagues/submit', 'App\Http\Controllers\League\LeaguesController@su
 Route::get('/leagues/joinKey', 'App\Http\Controllers\League\LeaguesController@joinKey')->name('leagues.joinKey');
 Route::post('/leagues/joinByKey', 'App\Http\Controllers\League\LeaguesController@joinByKey')->name('leagues.joinByKey');
 Route::get('/leagues/{league}/games', 'App\Http\Controllers\League\LeaguesController@showGames')->name('leagues.games');
+Route::get('/leagues/{league}/games/results', 'App\Http\Controllers\League\LeaguesController@showGamesResults')->name('leagues.results');
 Route::get('/leagues/{league}/games/add', 'App\Http\Controllers\League\LeaguesController@addGames')->name('leagues.addGames');
 Route::post('/leagues/submitGame', 'App\Http\Controllers\League\LeaguesController@submitGame')->name('leagues.submitGame');
 Route::post('/leagues/{league}/delete/{user}', 'App\Http\Controllers\League\LeaguesController@deleteUser')->name('leagues.deleteUser');
@@ -60,3 +61,4 @@ Route::namespace('App\Http\Controllers')->group(function(){
 Route::get('/games/uploadNHL/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames')->middleware('upload.games');
 Route::get('/games/attach/NHL/{league}', 'App\Http\Controllers\GamesController@attachNHLGames')->name('games.attach')->middleware('upload.games');
 Route::get('/results/PL/{matchDay}', 'App\Http\Controllers\ResultsController@getPLResult')->name('results.premierLeague')->middleware('upload.games');
+Route::get('/games/test/{league}', 'App\Http\Controllers\GamesController@test')->name('games.test');

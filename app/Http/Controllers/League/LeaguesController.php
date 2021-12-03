@@ -174,7 +174,7 @@ class LeaguesController extends Controller
 
     public function showGames(League $league)
     {
-      $games = $league->games()->orderBy('ended','desc')->orderBy('start_time','desc')->paginate(20);
+      $games = $league->games()->where('ended', 0)->orderBy('start_time','asc')->paginate(20);
       return view('leagues.games')->with(['league' => $league, 'games' => $games]);
     }
 
@@ -216,5 +216,11 @@ class LeaguesController extends Controller
 
         $owner = auth()->user();
         return redirect()->route('leagues.show', $league)->withSuccess('Lietotājs veiksmīgi dzēsts!');
+    }
+
+    public function showGamesResults(League $league)
+    {
+      $games = $league->games()->where('ended', 1)->orderBy('start_time','desc')->paginate(20);
+      return view('leagues.results')->with(['league' => $league, 'games' => $games]);
     }
 }

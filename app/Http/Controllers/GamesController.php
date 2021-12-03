@@ -58,4 +58,10 @@ class GamesController extends Controller
         return redirect()->route('home')->withErrors(["msg" => "Šai līgai jau ir pievienotas NHL spēles!"]);
       }
     }
+
+    public function test(League $league)
+    {
+      $games = $league->games()->where('ended', 1)->orderBy('start_time','desc')->get();
+      return $games;
+    }
 }
