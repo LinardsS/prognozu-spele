@@ -14,7 +14,7 @@ class GamesController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function uploadNHLGames($startDate, $endDate)
     {
       $schedule = Http::get('http://statsapi.web.nhl.com/api/v1/schedule?startDate=' . $startDate . '&endDate=' . $endDate);
@@ -44,9 +44,18 @@ class GamesController extends Controller
     {
       $league = League::where('id',$league)->first();
       $games = Game::where(['league_type' => 'NHL', 'ended' => 0])->get();
+      $gameCounter = 0;
       foreach($games as $game){
-          $league->games()->attach($game);
+          if (!$league->games()->where('game_id', '=', $game->id)->exists()) {
+            $league->games()->attach($game);
+            $gameCounter += 1;
+          }
         }
+      if($gameCounter != 0){
+        return redirect()->route('home')->withSuccess('Veiksmīgi ielādētas ' . $gameCounter . ' NHL spēles līgai ar ID= '. $league->id. '!');
+      }
+      else{
+        return redirect()->route('home')->withErrors(["msg" => "Šai līgai jau ir pievienotas NHL spēles!"]);
+      }
     }
-
 }
