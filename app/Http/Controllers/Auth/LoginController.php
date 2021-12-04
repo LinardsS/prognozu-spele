@@ -35,7 +35,7 @@ class LoginController extends Controller
         return $this->redirectTo;
       }
 
-      $this->redirectTo = route('home');
+      $this->redirectTo = route('leagues.index');
 
       return $this->redirectTo;
     }
