@@ -20,6 +20,7 @@
       <tr>
         <th scope="col">Līgas nosaukums</th>
         <th scope="col">Līgas apraksts</th>
+        <th scope="col">Vieta</th>
       </tr>
     </thead>
 
@@ -33,6 +34,7 @@
             </a>
           </td>
           <td>{{$userLeague['description']}}</td>
+          <td>{{$user->getPointTotal($userLeague['id'])}}</td>
         </tr>
       @endforeach
     </tbody>

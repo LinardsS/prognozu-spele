@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\League;
 
 class User extends Authenticatable
 {
@@ -108,5 +109,16 @@ class User extends Authenticatable
     public function predictions()
     {
       return $this->hasMany('App\Models\Prediction');
+    }
+
+    public function getPointTotal($league_id)
+    {
+      $id = $this->id;
+      $league = League::where('id',$league_id)->first();
+      $users = $league->users()->where('user_id', '>', 0)->orderBy('pivot_points', 'desc')->get();
+      $position = $users->search(function ($user, $key) use ($id) {
+          return $user->id == $id;
+      });
+      return $position + 1;
     }
 }
