@@ -27,7 +27,7 @@
         @if($prediction)
         <td>{{$prediction->home_team_points}} - {{$prediction->away_team_points}}</td>
         <td>@if($game->evaluateResult($prediction->home_team_points, $prediction->away_team_points, $r_home, $r_away))
-            1
+            {{$result->getPredictionScore($league->predictionType, $prediction->home_team_points, $prediction->away_team_points)}}
             @else
             0
             @endif</td>

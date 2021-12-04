@@ -24,7 +24,7 @@
         @if(Auth::check())
           @if(auth()->user()->hasRole('admin'))
           <li class="{{Request::is('admin/users') ? 'active' : ''}}">
-            <a class="nav-link" href="{{route('admin.users.index')}}">Lietotāji</a>
+            <a class="nav-link" href="{{route('admin.users.index')}}">Administrācija</a>
           </li>
           @endif
         @endif

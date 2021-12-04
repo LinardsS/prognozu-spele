@@ -52,3 +52,8 @@
     </div>
 </div>
 @endsection
+@section('sidebar')
+<a href="{{route('results.NHL')}}">
+  <button type="button" class="btn btn-success float-right">Ielādēt NHL rezultātus</button>
+</a>
+@endsection

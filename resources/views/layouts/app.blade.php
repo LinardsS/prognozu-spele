@@ -15,10 +15,15 @@
       @include('inc.showcase')
       @endif
       <div class="row">
-        <div class="col-md-8 col-lg-8">
+        <div class="col-10">
             @include('inc.messages')
             @yield('content')
         </div>
+        @if(Request::is('admin/users'))
+        <div class="col-2">
+            @include('inc.sidebar')
+        </div>
+        @endif
       </div>
     </div>
     <footer id="footer" class="text-center">
