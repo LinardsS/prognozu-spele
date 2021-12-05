@@ -54,7 +54,9 @@ class UsersController extends Controller
     {
         $user->roles()->sync($request->roles);
         $user->name = $request->name;
-        $user->email = $request->email;
+        if(!User::where('email', $request->email)->first()){
+          $user->email = $request->email;
+        }
         if($user->save()){
           $request->session()->flash('success', $user->name . ' has been updated');
         } else{
