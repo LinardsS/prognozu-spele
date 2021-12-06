@@ -101,7 +101,7 @@ class LeaguesController extends Controller
       }
       else{
         $league->users()->save($user);
-        return view('leagues.single')->with(['league' => $league, 'user' => $user]);
+        return redirect()->route('leagues.show', ['league' => $league, 'user' => $user])->withSuccess('Lietotājs veiksmīgi pievienojies līgai!');;
       }
     }
 
