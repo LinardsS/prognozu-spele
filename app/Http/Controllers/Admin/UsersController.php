@@ -15,6 +15,7 @@ class UsersController extends Controller
         $this->middleware('auth');
     }
     /**
+     * L-006
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -44,8 +45,8 @@ class UsersController extends Controller
     }
 
     /**
+     * l-002
      * Update the specified resource in storage.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
@@ -62,11 +63,12 @@ class UsersController extends Controller
         } else{
           $request->session()->flash('error', 'There was an error updating the user');
         }
-        
+
         return redirect()->route('admin.users.index');
     }
 
     /**
+     * L-003
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\User  $user

@@ -14,7 +14,7 @@ class Result extends Model
     {
         return $this->belongsTo('App\Models\Game');
     }
-
+    //R-004
     public function getPredictionScore($scoring, $p_home, $p_away)
     {
       if($scoring == "Win")

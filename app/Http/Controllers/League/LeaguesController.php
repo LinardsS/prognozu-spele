@@ -48,6 +48,7 @@ class LeaguesController extends Controller
     }
 
     /**
+     * LE-003
      * Display the specified resource.
      *
      * @param  \App\Models\User  $user
@@ -92,7 +93,7 @@ class LeaguesController extends Controller
     {
         //
     }
-
+    //LE-010
     public function join(Request $request, League $league)
     {
       $user = User::find($request->user);
@@ -104,7 +105,7 @@ class LeaguesController extends Controller
         return redirect()->route('leagues.show', ['league' => $league, 'user' => $user])->withSuccess('Lietotājs veiksmīgi pievienojies līgai!');;
       }
     }
-
+    //LE-001
     public function submit(Request $request)
     {
       $this->validate($request, [
@@ -140,7 +141,7 @@ class LeaguesController extends Controller
     {
       return view('leagues.join');
     }
-
+    //LE-009
     public function joinByKey(Request $request)
     {
       $this->validate($request, [
@@ -164,14 +165,14 @@ class LeaguesController extends Controller
         return redirect('/leagues/joinKey')->withErrors(['msg' => 'Ievadītais līgas kods neeksistē!']);
       }
     }
-
+    //LE-004
     public function leave(Request $request, League $league)
     {
       $user = User::find($request->user);
       $user->leagues()->detach($league);
       return redirect('/leagues')->withSuccess('Līga veiksmīgi pamesta!');
     }
-
+    //LE-007
     public function showGames(League $league)
     {
       $games = $league->games()->where('ended', 0)->orderBy('start_time','asc')->paginate(20);
@@ -182,7 +183,7 @@ class LeaguesController extends Controller
     {
       return view('leagues.addGames')->with(['league' => $league]);
     }
-
+    //LE-006
     public function submitGame(Request $request)
     {
       $this->validate($request, [
@@ -209,7 +210,7 @@ class LeaguesController extends Controller
       $league->games()->save($game);
       return redirect()->route('leagues.addGames', $league)->withSuccess('Spēle veiksmīgi pievienota!');
     }
-
+    //LE-005
     public function deleteUser(League $league, User $user)
     {
         $league->users()->where('user_id', $user->id)->detach($user);
@@ -217,7 +218,7 @@ class LeaguesController extends Controller
         $owner = auth()->user();
         return redirect()->route('leagues.show', $league)->withSuccess('Lietotājs veiksmīgi dzēsts!');
     }
-
+    //LE-008
     public function showGamesResults(League $league)
     {
       $games = $league->games()->where('ended', 1)->orderBy('start_time','desc')->paginate(20);

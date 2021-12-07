@@ -110,7 +110,7 @@ class ResultsController extends Controller
       $response = Http::withHeaders(['X-Auth-Token' => $authKey])->get('http://api.football-data.org/v2/competitions/PL/matches/?matchday' . $matchDay);
       return $response;
     }
-
+    //R-002
     public function getNHLResults()
     {
       //to get startDate for request, find earliest unprocessed game in games table for NHL league
@@ -159,7 +159,7 @@ class ResultsController extends Controller
       }
       return redirect()->route('home')->withSuccess('Rezultāti veiksmīgi ielādēti ' . $gameCounter . ' NHL spēlēm!');
     }
-
+    //R-003
     public function league($user, League $league)
     {
       $user = User::find($user);
