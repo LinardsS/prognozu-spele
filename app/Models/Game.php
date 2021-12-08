@@ -27,7 +27,7 @@ class Game extends Model
     {
         return $this->hasOne('App\Models\Result');
     }
-
+    //S-001
     public function processResult($home_team_points, $away_team_points)
     {
       $predictions = Prediction::where('game_id',$this->id)->get();

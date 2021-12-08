@@ -93,7 +93,7 @@ class PredictionsController extends Controller
     {
         //
     }
-
+    //P-002
     public function league(League $league)
     {
       $user = auth()->user();
@@ -103,7 +103,7 @@ class PredictionsController extends Controller
       $games = $league->games()->where('ended',0)->where('start_time', '>', $date)->orderBy('start_time', 'asc')->paginate(20);
       return view('predictions.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
     }
-
+    //P-001
     public function submit(Request $request)
     {
       foreach ($request->input('points', []) as $id => $points) {
