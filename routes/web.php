@@ -12,25 +12,22 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//Home
 Route::get('/', 'App\Http\Controllers\PagesController@getHome');
-
-Route::get('/leagues', 'App\Http\Controllers\PagesController@getLeagues');
-
+//Saziņa
 Route::get('/contact', 'App\Http\Controllers\PagesController@getContact');
-
 Route::get('/messages', 'App\Http\Controllers\MessagesController@getMessages');
-
 Route::post('/contact/submit', 'App\Http\Controllers\MessagesController@submit');
-
+//Auth
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+//Admin
 Route::namespace('App\Http\Controllers\Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function(){
   Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
 
 });
+//League
 Route::post('/leagues/join/{league}', 'App\Http\Controllers\League\LeaguesController@join')->name('leagues.join');
 Route::post('/leagues/leave/{league}', 'App\Http\Controllers\League\LeaguesController@leave')->name('leagues.leave');
 Route::post('/leagues/submit', 'App\Http\Controllers\League\LeaguesController@submit')->name('leagues.submit');
@@ -41,9 +38,10 @@ Route::get('/leagues/{league}/games/results', 'App\Http\Controllers\League\Leagu
 Route::get('/leagues/{league}/games/add', 'App\Http\Controllers\League\LeaguesController@addGames')->name('leagues.addGames');
 Route::post('/leagues/submitGame', 'App\Http\Controllers\League\LeaguesController@submitGame')->name('leagues.submitGame');
 Route::post('/leagues/{league}/delete/{user}', 'App\Http\Controllers\League\LeaguesController@deleteUser')->name('leagues.deleteUser');
+Route::get('/leagues/{league}/edit', 'App\Http\Controllers\League\LeaguesController@edit')->name('leagues.edit')->middleware('edit.league');
 
 Route::namespace('App\Http\Controllers\League')->group(function(){
-  Route::resource('/leagues', 'LeaguesController');
+  Route::resource('/leagues', 'LeaguesController', ['except' => ['edit']]);
 });
 
 Route::post('/predictions/submit', 'App\Http\Controllers\PredictionsController@submit')->name('predictions.submit');

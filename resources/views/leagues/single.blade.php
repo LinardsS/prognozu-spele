@@ -31,6 +31,9 @@
   @else
   <div class="container">
     <a href="{{route('leagues.games', $league)}}"><button type="button" class="btn btn-primary float-left">Spēles</button></a>
+    @if($user->isLeagueOwner($league->id) || (auth()->user()->id == 1))
+    <a href="{{route('leagues.edit', $league)}}"><button type="button" class="btn btn-primary float-left">Rediģēt līgu</button></a>
+    @endif
     <form method="POST" action="{{route('leagues.leave', $league)}}">
       @csrf
       <input type="hidden" name="user" value="{{$user->id}}"> </input>

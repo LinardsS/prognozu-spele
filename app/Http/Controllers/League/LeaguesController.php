@@ -66,9 +66,9 @@ class LeaguesController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(League $league)
     {
-        //
+        return view('leagues.edit')->with(['league' => $league]);
     }
 
     /**
@@ -78,9 +78,16 @@ class LeaguesController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, League $league)
     {
-        //
+        $league->name = $request->name;
+        $league->description = $request->description;
+        if($league->save()){
+          $request->session()->flash('success', $league->name . ' veiksmīgi rediģēta');
+        } else{
+          $request->session()->flash('error', 'Notikusi kļūda rediģēšanas laikā!');
+        }
+        return redirect()->route('leagues.index');
     }
 
     /**

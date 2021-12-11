@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'upload.games' => \App\Http\Middleware\UploadGames::class,
         'view.predictions' => \App\Http\Middleware\ViewPredictions::class,
+        'edit.league' => \App\Http\Middleware\EditLeague::class,
     ];
 }
