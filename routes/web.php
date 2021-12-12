@@ -51,6 +51,8 @@ Route::namespace('App\Http\Controllers')->group(function(){
 });
 
 Route::get('/results/NHL', 'App\Http\Controllers\ResultsController@getNHLResults')->name('results.NHL')->middleware('upload.games');
+Route::post('/results/add', 'App\Http\Controllers\ResultsController@submit')->name('results.submit');
+Route::get('/results/add/{league}/{game}', 'App\Http\Controllers\ResultsController@add')->name('results.add');
 Route::get('/results/{user}/{league}', 'App\Http\Controllers\ResultsController@league')->name('results.league');
 Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/results', 'ResultsController');

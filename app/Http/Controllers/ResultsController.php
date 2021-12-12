@@ -44,9 +44,9 @@ class ResultsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function add(League $league, Game $game)
     {
-        //
+        return view('results.create')->with(['league' => $league, 'game' => $game]);
     }
 
     /**
@@ -166,5 +166,10 @@ class ResultsController extends Controller
       $predictions = $user->predictions()->where('league_id', $league->id)->get()->toArray();
       $games = $league->games()->where('ended',1)->orderBy('start_time', 'desc')->paginate(10);
       return view('results.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
+    }
+
+    public function submit(Request $request)
+    {
+      return $request;
     }
 }

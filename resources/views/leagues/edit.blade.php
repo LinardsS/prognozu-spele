@@ -25,7 +25,7 @@
                     <div class="form-group row">
                         <label for="description" class="col-md-2 col-form-label text-md-right">Apraksts</label>
                         <div class="col-md-6">
-                            <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ $league->description }}" required autofocus>
+                            <input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" value="{{ $league->description }}"autofocus>
 
                             @error('description')
                                 <span class="invalid-feedback" role="alert">

@@ -28,19 +28,25 @@
       <th scope="col">Mājas komanda</th>
       <th scope="col">Viesu komanda</th>
       <th scope="col">Spēles laiks</th>
+      @if(auth()->user()->isLeagueOwner($league->id))
+      <th scope="col"></th>
+      @endif
     </tr>
   </thead>
   <tbody>
+    @if(auth()->user()->isInLeague($league->id))
     @foreach($games as $game)
-      @if($league->private != true && auth()->user()->isInLeague($league->id))
       <tr>
         <td>{{$game->id}}</td>
         <td>{{$game->home_team}}</td>
         <td>{{$game->away_team}}</td>
         <td>{{date('d-m-Y H:i', strtotime($game->start_time))}}</td>
+        @if(auth()->user()->isLeagueOwner($league->id))
+        <td><a href="{{route('results.add', [$league, $game])}}"><button type="button" class="btn btn-primary float-left">Pievienot rezultātu</button></a></td>
+        @endif
       </tr>
-      @endif
     @endforeach
+    @endif
   </tbody>
 </table>
 {{$games->links()}}

@@ -17,7 +17,7 @@ class CreateLeaguesTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('maxPlayers');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('scoring');
             $table->boolean('private');
             $table->string('predictionType');
