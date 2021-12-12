@@ -80,8 +80,25 @@ class LeaguesController extends Controller
      */
     public function update(Request $request, League $league)
     {
+        // Count league users to see if change of maxPlayers can break the current state
+        $leagueUsers = $league->users()->get();
+        $userCount =  $leagueUsers->count();
+        // If new maxPlayers number bigger than current number of players, throw error
+        if($userCount > $request->maxPlayers){
+          return redirect()->route('leagues.edit', ['league' => $league])->withErrors(['Maksimālais spēlētāju skaits nevar būt mazāks par pašlaik esošo spēlētāju skaitu!']);
+        }
+        else{
+          $league->maxPlayers = $request->maxPlayers;
+        }
         $league->name = $request->name;
         $league->description = $request->description;
+        if($request->has('private') == 1 ){
+          $league->private = 1;
+        }
+        else{
+          $league->private = 0;
+        }
+
         if($league->save()){
           $request->session()->flash('success', $league->name . ' veiksmīgi rediģēta');
         } else{
