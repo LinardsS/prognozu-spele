@@ -170,6 +170,24 @@ class ResultsController extends Controller
 
     public function submit(Request $request)
     {
-      return $request;
+      $league = League::where('id', $request->league_id)->first();
+      $game = Game::where('id',$request->game_id)->first();
+      if($game->ended == 1){
+        return redirect()->route('leagues.games', $league)->withErrors(['msg' => 'Šai spēlei rezultāts jau eksistē!']);
+      }
+      if($game->isCustom()){
+        // create result record in database
+        Result::create(['home_team'      => $request->home_team,
+                      'away_team'        => $request->away_team,
+                      'home_team_points' => $request->home_team_points,
+                      'away_team_points' => $request->away_team_points,
+                      'game_id'          => $request->game_id]);
+        // mark game as ended
+        $game->update(['ended' => true]);
+        return redirect()->route('leagues.games', $league)->withSuccess('Rezultāts veiksmīgi pievienots!');
+      }
+      else{
+        return redirect()->route('leagues.games', $league)->withErrors(['msg' => 'Šai spēlei rezultātu nevar pievienot!']);
+      }
     }
 }
