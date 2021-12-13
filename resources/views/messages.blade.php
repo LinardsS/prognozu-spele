@@ -3,17 +3,46 @@
 @section('content')
   <h1>Messages</h1>
   @if(count($messages) > 0)
-    @foreach($messages as $message)
-      <ul class="list-group">
-        <li class = "list-group-item">Name: {{$message->name}}</li>
-        <li class = "list-group-item">Email: {{$message->email}}</li>
-        <li class = "list-group-item">Message: {{$message->message}}</li>
-      </ul>
-    @endforeach
+    <table class="table" style="table-layout: fixed; width: 100%">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Vārds</th>
+        <th scope="col">E-pasts</th>
+        <th scope="col">Ziņa</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($messages as $message)
+      <tr>
+        <td>{{$message->name}}</td>
+        <td>{{$message->email}}</td>
+        <td style="word-wrap: break-word">{{$message->message}}</td>
+        <td>
+          @if($message->read == 0)
+          <form class="" action="{{ route('messages.read', $message)}}" method="post">
+            @csrf
+            <button type="submit" class="btn btn-danger" style="align: right;">
+               Atzīmēt kā lasītu
+            </button>
+         </form>
+          @else
+          <form class="" action="{{ route('messages.unread', $message)}}" method="post">
+            @csrf
+            <button type="submit" class="btn btn-primary" style="align: right;">
+               Atiestatīt kā nelasītu
+            </button>
+          </form>
+          @endif
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+
   @endif
 @endsection
 
 @section('sidebar')
   @parent
-  <p>This is appended to the sidebar</p>
 @endsection

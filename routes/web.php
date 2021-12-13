@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Route;
 //Home
 Route::get('/', 'App\Http\Controllers\PagesController@getHome');
 //Saziņa
-Route::get('/contact', 'App\Http\Controllers\PagesController@getContact');
-Route::get('/messages', 'App\Http\Controllers\MessagesController@getMessages');
+Route::get('/contact', 'App\Http\Controllers\MessagesController@getContact');
+Route::get('/messages', 'App\Http\Controllers\MessagesController@getMessages')->name('messages');
+Route::post('/messages/read/{message}', 'App\Http\Controllers\MessagesController@markAsRead')->name('messages.read');
+Route::post('/messages/unread/{message}', 'App\Http\Controllers\MessagesController@markAsUnread')->name('messages.unread');
 Route::post('/contact/submit', 'App\Http\Controllers\MessagesController@submit');
 //Auth
 Auth::routes();

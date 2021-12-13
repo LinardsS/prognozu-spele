@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\League;
+use App\Models\Message;
 
 class User extends Authenticatable
 {
@@ -120,5 +121,13 @@ class User extends Authenticatable
           return $user->id == $id;
       });
       return $position + 1;
+    }
+
+    public function getMessageCount()
+    {
+      $messageList = Message::where('read',0)->get();
+      $messageCount = $messageList->count();
+
+      return $messageCount;
     }
 }

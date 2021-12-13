@@ -18,6 +18,8 @@ class CreateMessagesTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->mediumText('message');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->boolean('read');
             $table->timestamps();
         });
     }

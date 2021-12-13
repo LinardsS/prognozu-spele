@@ -13,8 +13,4 @@ class PagesController extends Controller
     public function getLeagues(){
       return view('leagues');
     }
-
-    public function getContact(){
-      return view('contact');
-    }
 }
