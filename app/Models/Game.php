@@ -86,4 +86,13 @@ class Game extends Model
         return false;
       }
     }
+    public function isCustom(){
+      // if league_type contains a value, it's a game uploaded from an outside source
+      if($this->league_type){
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
 }

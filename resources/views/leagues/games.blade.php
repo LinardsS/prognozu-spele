@@ -41,7 +41,7 @@
         <td>{{$game->home_team}}</td>
         <td>{{$game->away_team}}</td>
         <td>{{date('d-m-Y H:i', strtotime($game->start_time))}}</td>
-        @if(auth()->user()->isLeagueOwner($league->id))
+        @if(auth()->user()->isLeagueOwner($league->id) && $game->isCustom())
         <td><a href="{{route('results.add', [$league, $game])}}"><button type="button" class="btn btn-primary float-left">Pievienot rezultātu</button></a></td>
         @endif
       </tr>
