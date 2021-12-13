@@ -182,6 +182,8 @@ class ResultsController extends Controller
                       'home_team_points' => $request->home_team_points,
                       'away_team_points' => $request->away_team_points,
                       'game_id'          => $request->game_id]);
+        // process predictions on game
+        $game->processResult($request->home_team_points, $request->away_team_points);
         // mark game as ended
         $game->update(['ended' => true]);
         return redirect()->route('leagues.games', $league)->withSuccess('Rezultāts veiksmīgi pievienots!');
