@@ -64,4 +64,11 @@ class GamesController extends Controller
       $games = $league->games()->where('ended', 1)->orderBy('start_time','desc')->get();
       return $games;
     }
+
+    public function destroy(Game $game)
+    {   
+        $game->delete();
+
+        return redirect()->back()->withSuccess('Spēle dzēsta veiksmīgi!');
+    }
 }

@@ -45,22 +45,23 @@ Route::get('/leagues/{league}/edit', 'App\Http\Controllers\League\LeaguesControl
 Route::namespace('App\Http\Controllers\League')->group(function(){
   Route::resource('/leagues', 'LeaguesController', ['except' => ['edit']]);
 });
-
+//Predictions
 Route::post('/predictions/submit', 'App\Http\Controllers\PredictionsController@submit')->name('predictions.submit');
 Route::get('/predictions/{league}', 'App\Http\Controllers\PredictionsController@league')->name('predictions.league')->middleware('view.predictions');
 Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/predictions', 'PredictionsController');
 });
-
+//Results
 Route::get('/results/NHL', 'App\Http\Controllers\ResultsController@getNHLResults')->name('results.NHL')->middleware('upload.games');
 Route::post('/results/add', 'App\Http\Controllers\ResultsController@submit')->name('results.submit');
 Route::get('/results/add/{league}/{game}', 'App\Http\Controllers\ResultsController@add')->name('results.add');
 Route::get('/results/{user}/{league}', 'App\Http\Controllers\ResultsController@league')->name('results.league');
+Route::get('/results/PL/{matchDay}', 'App\Http\Controllers\ResultsController@getPLResult')->name('results.premierLeague')->middleware('upload.games');
 Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/results', 'ResultsController');
 });
-
+//Games
 Route::get('/games/uploadNHL/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames')->middleware('upload.games');
 Route::get('/games/attach/NHL/{league}', 'App\Http\Controllers\GamesController@attachNHLGames')->name('games.attach')->middleware('upload.games');
-Route::get('/results/PL/{matchDay}', 'App\Http\Controllers\ResultsController@getPLResult')->name('results.premierLeague')->middleware('upload.games');
 Route::get('/games/test/{league}', 'App\Http\Controllers\GamesController@test')->name('games.test');
+Route::post('/games/{game}/delete', 'App\Http\Controllers\GamesController@destroy')->name('games.delete');

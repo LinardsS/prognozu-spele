@@ -30,6 +30,7 @@
       <th scope="col">Spēles laiks</th>
       @if(auth()->user()->isLeagueOwner($league->id))
       <th scope="col"></th>
+      <th scope="col"></th>
       @endif
     </tr>
   </thead>
@@ -43,6 +44,15 @@
         <td>{{date('d-m-Y H:i', strtotime($game->start_time))}}</td>
         @if(auth()->user()->isLeagueOwner($league->id) && $game->isCustom())
         <td><a href="{{route('results.add', [$league, $game])}}"><button type="button" class="btn btn-primary float-left">Pievienot rezultātu</button></a></td>
+        <form method="POST" action="{{route('games.delete', $game)}}">
+          @csrf
+          <td><button type="submit" class="btn btn-danger float-left">Dzēst spēli</button></td>
+        </form>
+        @elseif(!$game->isCustom() && auth()->user()->hasRole('admin'))
+        <form method="POST" action="{{route('games.delete', $game)}}">
+          @csrf
+          <td><button type="submit" class="btn btn-danger float-left">Dzēst spēli</button></td>
+        </form>
         @endif
       </tr>
     @endforeach
