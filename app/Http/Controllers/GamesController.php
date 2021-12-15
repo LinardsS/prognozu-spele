@@ -59,14 +59,88 @@ class GamesController extends Controller
       }
     }
 
-    public function test(League $league)
+    public function uploadNBAGames($startDate, $endDate)
     {
-      $games = $league->games()->where('ended', 1)->orderBy('start_time','desc')->get();
-      return $games;
+      $gamesCounter = 0;
+      $idArray = [];
+      $request = Http::get('http://www.balldontlie.io/api/v1/games?start_date='. $startDate .'&end_date='. $endDate .'&per_page=100');
+      $requestArray = json_decode($request,true);
+      $data = $requestArray['data'];
+      foreach($data as $game){
+        $gameId = $game['id'];
+        $gameId = strval($gameId);
+        $gameDate = $game['date'];
+        $gameDate = substr($gameDate,0,-14);
+        $gameTime = $game['status']; // for scheduled game holds game time value
+        $gameTime = substr($gameTime, 0, -3);
+        if($gameTime == "Final"){
+          continue;
+        }
+        else{
+          $subtractHours = "- 5hours";
+          if($gameTime == "12:00 PM ET"){
+            $subtractHours = "- 12hours";
+          }
+          $gameTime = substr($gameTime, 0, -3);
+          if(!Game::where('external_game_id', $gameId)->first()){
+            Game::create(['home_team' =>  $game['home_team']['full_name'],
+                          'away_team' =>  $game['visitor_team']['full_name'],
+                          'start_time' => date('Y-m-d H:i', strtotime("$gameDate . $gameTime.  $subtractHours")),
+                          'ended'      => false,
+                          'external_game_id' => $gameId,
+                          'league_type' => "NBA"]);
+            $gamesCounter += 1;
+            $idArray[] = $gameId;
+          }
+        }
+      }
+
+      // check page count of request result
+      $pageCount = $requestArray['meta']['total_pages'];
+      // if more than one page, loop through the rest
+      for($i = 2; $i <= $pageCount; $i++){
+        $requestString = 'http://www.balldontlie.io/api/v1/games?start_date='. $startDate .'&end_date='. $endDate .'&page='. $i .'&per_page=100';
+        $loopRequest = Http::get($requestString);
+        $loopArray = json_decode($loopRequest,true);
+        $loopData = $loopArray['data'];
+        foreach($loopData as $game){
+          $gameId = $game['id'];
+          $gameId = strval($gameId);
+          if(!in_array($gameId, $idArray)){
+            $gameArray = [];
+            $gameDate = $game['date'];
+            $gameDate = substr($gameDate,0,-14);
+            $gameTime = $game['status']; // for scheduled game holds game time value
+            if($gameTime == "Final"){
+              continue;
+            }
+            else{
+              $subtractHours = "- 5hours";
+              if($gameTime == "12:00 PM ET"){
+                $subtractHours = "- 12hours";
+              }
+              $gameTime = substr($gameTime, 0, -3);
+
+              if(!Game::where('external_game_id', $gameId)->first()){
+                Game::create(['home_team' =>  $game['home_team']['full_name'],
+                              'away_team' =>  $game['visitor_team']['full_name'],
+                              'start_time' => date('Y-m-d H:i', strtotime("$gameDate . $gameTime.  $subtractHours")),
+                              'ended'      => false,
+                              'external_game_id' => $gameId,
+                              'league_type' => "NBA"]);
+                $gamesCounter += 1;
+                $idArray[] = $gameId;
+              }
+            }
+
+          }
+        }
+      }
+      return redirect()->route('home')->withSuccess('Veiksmīgi ielādētas ' . $gamesCounter . ' NBA spēles!');
     }
 
     public function destroy(Game $game)
-    {   
+    {
         $game->delete();
 
         return redirect()->back()->withSuccess('Spēle dzēsta veiksmīgi!');
