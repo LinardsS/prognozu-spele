@@ -4,7 +4,7 @@
   <h1>{{$league->name}}</h1>
 
   <p><strong>Apraksts: </strong>{{$league->description}}</p>
-  <p><strong>Līgas punktu skaitīšanas sistēma: </strong> {{$league->predictionType}}</p>
+  <p><strong>Līgas punktu skaitīšanas veids: </strong>@if($league->predictionType == "Score") Rezultāts @else Uzvarētājs @endif</p>
   <p><strong>Maksimālais atļautais spēlētāju skaits: </strong> {{$league->maxPlayers}}</p>
   <p>
     Līga
