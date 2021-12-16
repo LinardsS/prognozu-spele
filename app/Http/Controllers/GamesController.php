@@ -72,20 +72,17 @@ class GamesController extends Controller
         $gameDate = $game['date'];
         $gameDate = substr($gameDate,0,-14);
         $gameTime = $game['status']; // for scheduled game holds game time value
-        $gameTime = substr($gameTime, 0, -3);
         if($gameTime == "Final"){
           continue;
         }
         else{
-          $subtractHours = "- 5hours";
-          if($gameTime == "12:00 PM ET"){
-            $subtractHours = "- 12hours";
-          }
           $gameTime = substr($gameTime, 0, -3);
+          $time_in_24_hour_format  = date("G:i", strtotime($gameTime));
+          $gameTimeObj = date('Y-m-d H:i', strtotime("$gameDate . $time_in_24_hour_format . 7hours"));
           if(!Game::where('external_game_id', $gameId)->first()){
             Game::create(['home_team' =>  $game['home_team']['full_name'],
                           'away_team' =>  $game['visitor_team']['full_name'],
-                          'start_time' => date('Y-m-d H:i', strtotime("$gameDate . $gameTime.  $subtractHours")),
+                          'start_time' => $gameTimeObj,
                           'ended'      => false,
                           'external_game_id' => $gameId,
                           'league_type' => "NBA"]);
@@ -115,16 +112,13 @@ class GamesController extends Controller
               continue;
             }
             else{
-              $subtractHours = "- 5hours";
-              if($gameTime == "12:00 PM ET"){
-                $subtractHours = "- 12hours";
-              }
               $gameTime = substr($gameTime, 0, -3);
-
+              $time_in_24_hour_format  = date("G:i", strtotime($gameTime));
+              $gameTimeObj = date('Y-m-d H:i', strtotime("$gameDate . $time_in_24_hour_format . 7hours"));
               if(!Game::where('external_game_id', $gameId)->first()){
                 Game::create(['home_team' =>  $game['home_team']['full_name'],
                               'away_team' =>  $game['visitor_team']['full_name'],
-                              'start_time' => date('Y-m-d H:i', strtotime("$gameDate . $gameTime.  $subtractHours")),
+                              'start_time' => $gameTimeObj,
                               'ended'      => false,
                               'external_game_id' => $gameId,
                               'league_type' => "NBA"]);
@@ -144,5 +138,105 @@ class GamesController extends Controller
         $game->delete();
 
         return redirect()->back()->withSuccess('Spēle dzēsta veiksmīgi!');
+    }
+
+    public function testNBATime($startDate, $endDate)
+    {
+      $gamesCounter = 0;
+      $idArray = [];
+      $gamesArray = [];
+      $request = Http::get('http://www.balldontlie.io/api/v1/games?start_date='. $startDate .'&end_date='. $endDate .'&per_page=100');
+      $requestArray = json_decode($request,true);
+      $data = $requestArray['data'];
+      $game = $data[0];
+      $gameId = $game['id'];
+      $gameId = strval($gameId);
+      $gameDate = $game['date'];
+      $gameDate = substr($gameDate,0,-14);
+      $gameTime = $game['status']; // for scheduled game holds game time value
+      if($gameTime == "Final"){
+          return 0;
+      }
+      else{
+          $gameTime = substr($gameTime, 0, -3);
+          $time_in_24_hour_format  = date("G:i", strtotime($gameTime));
+          $gameTimeObj = date('Y-m-d H:i', strtotime("$gameDate . $time_in_24_hour_format . 7hours"));
+          if(!Game::where('external_game_id', $gameId)->first()){
+            Game::create(['home_team' =>  $game['home_team']['full_name'],
+                          'away_team' =>  $game['visitor_team']['full_name'],
+                          'start_time' => $gameTimeObj,
+                          'ended'      => false,
+                          'external_game_id' => $gameId,
+                          'league_type' => "NBA"]);
+          }
+  /*    foreach($data as $game){
+        $gameArray = [];
+        $gameId = $game['id'];
+        $gameId = strval($gameId);
+        $gameDate = $game['date'];
+        $gameDate = substr($gameDate,0,-14);
+        $gameTime = $game['status']; // for scheduled game holds game time value
+        if($gameTime == "Final"){
+          continue;
+        }
+        else{
+          $gameArray[] = $gameTime."pre-gt";
+          $gameTime = substr($gameTime, 0, -3);
+          $time_in_24_hour_format  = date("G:i", strtotime($gameTime));
+          $gameTimeObj = date('Y-m-d H:i', strtotime("$gameDate . $time_in_24_hour_format . 7hours"));
+          $gamesCounter += 1;
+          $idArray[] = $gameId;
+          $gameArray[] = $gameId;
+          $gameArray[] = $gameTimeObj;
+          $gameArray[] = $game['home_team']['full_name'];
+          $gameArray[] = $game['visitor_team']['full_name'];
+          $gameArray[] = $gameTime."post-gt";
+          $gameArray[] = $time_in_24_hour_format."24hrformat";
+          $gamesArray[] = $gameArray;
+          }
+        }
+
+
+      // check page count of request result
+      $pageCount = $requestArray['meta']['total_pages'];
+      // if more than one page, loop through the rest
+      if($pageCount > 1){
+        for($i = 2; $i <= $pageCount; $i++){
+          $requestString = 'http://www.balldontlie.io/api/v1/games?start_date='. $startDate .'&end_date='. $endDate .'&page='. $i .'&per_page=100';
+          $loopRequest = Http::get($requestString);
+          $loopArray = json_decode($loopRequest,true);
+          $loopData = $loopArray['data'];
+          foreach($loopData as $game){
+            $gameId = $game['id'];
+            $gameId = strval($gameId);
+            if(!in_array($gameId, $idArray)){
+              $gameArray = [];
+              $gameDate = $game['date'];
+              $gameDate = substr($gameDate,0,-14);
+              $gameTime = $game['status']; // for scheduled game holds game time value
+              if($gameTime == "Final"){
+                continue;
+              }
+              else{
+                $gameArray[] = $gameTime."pre-gt";
+                $gameTime = substr($gameTime, 0, -3);
+                $time_in_24_hour_format  = date("G:i", strtotime($gameTime));
+                $gameTimeObj = date('Y-m-d H:i', strtotime("$gameDate . $time_in_24_hour_format . 7hours"));
+                $gamesCounter += 1;
+                $idArray[] = $gameId;
+                $gameArray[] = $gameId;
+                $gameArray[] = $gameTimeObj;
+                $gameArray[] = $game['home_team']['full_name'];
+                $gameArray[] = $game['visitor_team']['full_name'];
+                $gameArray[] = $gameTime."post-gt";
+                $gameArray[] = $time_in_24_hour_format."24hrformat";
+                $gamesArray[] = $gameArray;
+                }
+              }
+            }
+          }
+        }
+*/}
+      return true;
     }
 }

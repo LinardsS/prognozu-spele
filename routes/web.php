@@ -64,4 +64,5 @@ Route::namespace('App\Http\Controllers')->group(function(){
 Route::get('/games/uploadNHL/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames')->middleware('upload.games');
 Route::get('/games/attach/NHL/{league}', 'App\Http\Controllers\GamesController@attachNHLGames')->name('games.attach')->middleware('upload.games');
 Route::get('/games/uploadNBA/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNBAGames')->name('games.uploadNBAGames')->middleware('upload.games');
+Route::get('/games/testNBA/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@testNBATime')->name('games.testNBATime')->middleware('upload.games');
 Route::post('/games/{game}/delete', 'App\Http\Controllers\GamesController@destroy')->name('games.delete');
