@@ -16,10 +16,6 @@
       {{Form::textarea('description', '', ['class' => 'form-control', 'placeholder' => 'Ievadiet īsu aprakstu par šo līgu']);}}
     </div>
     <div class="form-group">
-      {{Form::label('scoring', 'Punktu skaitīšanas veids');}}
-      {{Form::select('scoring', array('H2H' => 'Head-to-Head', 'Classic' => 'Classic'));}}
-    </div>
-    <div class="form-group">
       {{Form::label('private', 'Slēgta/atvērta līga');}}
       {{Form::select('private', array(0 => 'Atvērta', 1 => 'Slēgta'));}}
     </div>

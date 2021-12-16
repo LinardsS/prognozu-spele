@@ -135,7 +135,6 @@ class LeaguesController extends Controller
       $this->validate($request, [
         'name' => 'required',
         'maxPlayers' => 'required',
-        'scoring' => 'required',
         'private' => 'required',
         'predictionType' => 'required'
       ]);
@@ -144,7 +143,7 @@ class LeaguesController extends Controller
       $league->name = $request->input('name');
       $league->maxPlayers = $request->input('maxPlayers');
       $league->description = $request->input('description');
-      $league->scoring = $request->input('scoring');
+      $league->scoring = "Classic";
       $league->private = $request->input('private');
       $league->predictionType = $request->input('predictionType');
       $league->join_key = \Str::random(6);
