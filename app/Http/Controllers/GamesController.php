@@ -239,4 +239,24 @@ class GamesController extends Controller
 */}
       return true;
     }
+
+    //S-00
+    public function attachNBAGames($league)
+    {
+      $league = League::where('id',$league)->first();
+      $games = Game::where(['league_type' => 'NBA', 'ended' => 0])->get();
+      $gameCounter = 0;
+      foreach($games as $game){
+          if (!$league->games()->where('game_id', '=', $game->id)->exists()) {
+            $league->games()->attach($game);
+            $gameCounter += 1;
+          }
+        }
+      if($gameCounter != 0){
+        return redirect()->route('home')->withSuccess('Veiksmīgi ielādētas ' . $gameCounter . ' NBA spēles līgai ar ID= '. $league->id. '!');
+      }
+      else{
+        return redirect()->route('home')->withErrors(["msg" => "Šai līgai jau ir pievienotas NBA spēles!"]);
+      }
+    }
 }
