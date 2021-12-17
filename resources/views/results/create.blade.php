@@ -2,7 +2,7 @@
 
 @section('content')
   {!! Form::open(['route' => 'results.submit']) !!}
-  <h2>Pievienot spēles līgai: {{$league->name}}</h2>
+  <h2>Pievienot rezultātu spēlei {{$game->home_team}} - {{$game->away_team}}</h2>
   <input type="number" name="league_id" value="{{$league->id}}" hidden>
   <input type="number" name="game_id" value="{{$game->id}}" hidden>
   <input type="text" name="home_team" value="{{$game->home_team}}" hidden>
