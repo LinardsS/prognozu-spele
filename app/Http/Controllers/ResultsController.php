@@ -192,4 +192,47 @@ class ResultsController extends Controller
         return redirect()->route('leagues.games', $league)->withErrors(['msg' => 'Šai spēlei rezultātu nevar pievienot!']);
       }
     }
+
+    public function getNBAResults()
+    {
+      //league ID=6 will hold only NBA games
+      $league = League::find(6);
+      $firstGame = $league->games()->where('ended', false)->first();
+      $firstGameStart = $firstGame->start_time;
+      $startDate = date('Y-m-d', strtotime("$firstGameStart - 24hours"));
+      $endDate = new DateTime();
+      $endDate = $endDate->format('Y-m-d');
+      $request = Http::get('http://www.balldontlie.io/api/v1/games?start_date='. $startDate .'&end_date='. $endDate .'&per_page=100');
+      $requestArray = json_decode($request,true);
+      $data = $requestArray['data'];
+      $gameCounter = 0;
+      foreach($data as $game){
+        $gameStatus = $game['status'];
+        //look for finished games - status 'Final'
+        if($gameStatus == "Final"){
+          $home_team = $game['home_team']['full_name'];
+          $away_team = $game['visitor_team']['full_name'];
+          $home_team_points = $game['home_team_score'];
+          $away_team_points = $game['visitor_team_score'];
+          $game_pk = $game['id'];
+          $game_id = Game::where('external_game_id', $game_pk)->value('id');
+          //check if result for this game has already been entered
+          if(!Result::where('game_id',$game_id)->first()){
+            //create new result entry in database
+            Result::create(['home_team'      => $home_team,
+                          'away_team'        => $away_team,
+                          'home_team_points' => $home_team_points,
+                          'away_team_points' => $away_team_points,
+                          'game_id'          => $game_id]);
+
+            //update game status in database to ended = true
+            Game::where('external_game_id', $game_pk)->update(['ended'=>true]);
+            $gameCounter += 1;
+            //process all predictions related to this game using the newly retrieved result
+            Game::where('external_game_id', $game_pk)->first()->processResult($home_team_points, $away_team_points);
+          }
+        }
+      }
+      return redirect()->route('home')->withSuccess('Rezultāti veiksmīgi ielādēti ' . $gameCounter . ' NBA spēlēm!');
+    }
 }

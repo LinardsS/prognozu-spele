@@ -38,7 +38,7 @@
             </li>
             <li>
               <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-                  Logout
+                  Izlogoties
               </a>
               <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
                   {{ csrf_field() }}
@@ -46,10 +46,10 @@
             </li>
             @else
             <li class="{{Request::is('/login') ? 'active' : ''}}">
-              <a class="nav-link" href="{{route('login')}}">Login</a>
+              <a class="nav-link" href="{{route('login')}}">Ielogoties</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('register')}}">Register</a>
+                <a class="nav-link" href="{{route('register')}}">Reģistrēties</a>
             </li>
             @endif
 
