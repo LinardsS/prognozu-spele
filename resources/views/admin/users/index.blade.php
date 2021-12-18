@@ -56,7 +56,11 @@
 <a href="{{route('results.NHL')}}">
   <button type="button" class="btn btn-success float-right">Ielādēt NHL rezultātus</button>
 </a>
-<br><br><br><br>
+<br><br><br>
+<a href="{{route('results.NBA')}}">
+  <button type="button" class="btn btn-success float-right">Ielādēt NBA rezultātus</button>
+</a>
+<br><br><br>
 <a href="{{route('messages')}}">
   <button type="button" class="btn btn-primary float-right">Lietotāju ziņas({{auth()->user()->getMessageCount()}})</button>
 </a>
