@@ -197,7 +197,7 @@ class ResultsController extends Controller
     {
       //league ID=6 will hold only NBA games
       $league = League::find(6);
-      $firstGame = $league->games()->where('ended', false)->first();
+      $firstGame = $league->games()->where('ended', false)->orderBy('start_time', 'asc')->first();
       $firstGameStart = $firstGame->start_time;
       $startDate = date('Y-m-d', strtotime("$firstGameStart - 24hours"));
       $endDate = new DateTime();
