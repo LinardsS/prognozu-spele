@@ -139,107 +139,7 @@ class GamesController extends Controller
 
         return redirect()->back()->withSuccess('Spēle dzēsta veiksmīgi!');
     }
-
-    public function testNBATime($startDate, $endDate)
-    {
-      $gamesCounter = 0;
-      $idArray = [];
-      $gamesArray = [];
-      $request = Http::get('http://www.balldontlie.io/api/v1/games?start_date='. $startDate .'&end_date='. $endDate .'&per_page=100');
-      $requestArray = json_decode($request,true);
-      $data = $requestArray['data'];
-      $game = $data[0];
-      $gameId = $game['id'];
-      $gameId = strval($gameId);
-      $gameDate = $game['date'];
-      $gameDate = substr($gameDate,0,-14);
-      $gameTime = $game['status']; // for scheduled game holds game time value
-      if($gameTime == "Final"){
-          return 0;
-      }
-      else{
-          $gameTime = substr($gameTime, 0, -3);
-          $time_in_24_hour_format  = date("G:i", strtotime($gameTime));
-          $gameTimeObj = date('Y-m-d H:i', strtotime("$gameDate . $time_in_24_hour_format . 7hours"));
-          if(!Game::where('external_game_id', $gameId)->first()){
-            Game::create(['home_team' =>  $game['home_team']['full_name'],
-                          'away_team' =>  $game['visitor_team']['full_name'],
-                          'start_time' => $gameTimeObj,
-                          'ended'      => false,
-                          'external_game_id' => $gameId,
-                          'league_type' => "NBA"]);
-          }
-  /*    foreach($data as $game){
-        $gameArray = [];
-        $gameId = $game['id'];
-        $gameId = strval($gameId);
-        $gameDate = $game['date'];
-        $gameDate = substr($gameDate,0,-14);
-        $gameTime = $game['status']; // for scheduled game holds game time value
-        if($gameTime == "Final"){
-          continue;
-        }
-        else{
-          $gameArray[] = $gameTime."pre-gt";
-          $gameTime = substr($gameTime, 0, -3);
-          $time_in_24_hour_format  = date("G:i", strtotime($gameTime));
-          $gameTimeObj = date('Y-m-d H:i', strtotime("$gameDate . $time_in_24_hour_format . 7hours"));
-          $gamesCounter += 1;
-          $idArray[] = $gameId;
-          $gameArray[] = $gameId;
-          $gameArray[] = $gameTimeObj;
-          $gameArray[] = $game['home_team']['full_name'];
-          $gameArray[] = $game['visitor_team']['full_name'];
-          $gameArray[] = $gameTime."post-gt";
-          $gameArray[] = $time_in_24_hour_format."24hrformat";
-          $gamesArray[] = $gameArray;
-          }
-        }
-
-
-      // check page count of request result
-      $pageCount = $requestArray['meta']['total_pages'];
-      // if more than one page, loop through the rest
-      if($pageCount > 1){
-        for($i = 2; $i <= $pageCount; $i++){
-          $requestString = 'http://www.balldontlie.io/api/v1/games?start_date='. $startDate .'&end_date='. $endDate .'&page='. $i .'&per_page=100';
-          $loopRequest = Http::get($requestString);
-          $loopArray = json_decode($loopRequest,true);
-          $loopData = $loopArray['data'];
-          foreach($loopData as $game){
-            $gameId = $game['id'];
-            $gameId = strval($gameId);
-            if(!in_array($gameId, $idArray)){
-              $gameArray = [];
-              $gameDate = $game['date'];
-              $gameDate = substr($gameDate,0,-14);
-              $gameTime = $game['status']; // for scheduled game holds game time value
-              if($gameTime == "Final"){
-                continue;
-              }
-              else{
-                $gameArray[] = $gameTime."pre-gt";
-                $gameTime = substr($gameTime, 0, -3);
-                $time_in_24_hour_format  = date("G:i", strtotime($gameTime));
-                $gameTimeObj = date('Y-m-d H:i', strtotime("$gameDate . $time_in_24_hour_format . 7hours"));
-                $gamesCounter += 1;
-                $idArray[] = $gameId;
-                $gameArray[] = $gameId;
-                $gameArray[] = $gameTimeObj;
-                $gameArray[] = $game['home_team']['full_name'];
-                $gameArray[] = $game['visitor_team']['full_name'];
-                $gameArray[] = $gameTime."post-gt";
-                $gameArray[] = $time_in_24_hour_format."24hrformat";
-                $gamesArray[] = $gameArray;
-                }
-              }
-            }
-          }
-        }
-*/}
-      return true;
-    }
-
+    
     //S-00
     public function attachNBAGames($league)
     {
@@ -257,6 +157,52 @@ class GamesController extends Controller
       }
       else{
         return redirect()->route('home')->withErrors(["msg" => "Šai līgai jau ir pievienotas NBA spēles!"]);
+      }
+    }
+
+    public function uploadPLGames($matchDay){
+      $gamesCounter = 0;
+      $authKey = "5dd4dc55b02c40888d7fba33f492599b";
+      $response = Http::withHeaders(['X-Auth-Token' => $authKey])->get('http://api.football-data.org/v2/competitions/PL/matches/?matchday=' . $matchDay);
+      $responseArray = json_decode($response);
+      $matches = $responseArray->matches;
+      foreach($matches as $match){
+        $game_id = $match->id;
+        $status = $match->status;
+        if($status == "SCHEDULED"){
+          $home_team = $match->homeTeam->name;
+          $away_team = $match->awayTeam->name;
+          $start_date = $match->utcDate;
+          $start_date = date('Y-m-d H:i', strtotime("$start_date . 2hours"));
+          if(!Game::where('external_game_id', $game_id)->first()){
+            Game::create(['home_team' => $home_team,
+                          'away_team' => $away_team,
+                          'start_time' => $start_date,
+                          'ended'      => false,
+                          'external_game_id' => $game_id,
+                          'league_type' => "PL"]);
+          }
+        }
+      }
+      return 0;
+    }
+
+    public function attachPLGames($league)
+    {
+      $league = League::where('id',$league)->first();
+      $games = Game::where(['league_type' => 'PL', 'ended' => 0])->get();
+      $gameCounter = 0;
+      foreach($games as $game){
+          if (!$league->games()->where('game_id', '=', $game->id)->exists()) {
+            $league->games()->attach($game);
+            $gameCounter += 1;
+          }
+        }
+      if($gameCounter != 0){
+        return redirect()->route('home')->withSuccess('Veiksmīgi ielādētas ' . $gameCounter . ' PL spēles līgai ar ID= '. $league->id. '!');
+      }
+      else{
+        return redirect()->route('home')->withErrors(["msg" => "Šai līgai jau ir pievienotas PL spēles!"]);
       }
     }
 }

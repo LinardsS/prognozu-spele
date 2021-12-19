@@ -52,19 +52,21 @@ Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/predictions', 'PredictionsController');
 });
 //Results
+Route::get('/results/PL', 'App\Http\Controllers\ResultsController@getPLResults')->name('results.premierLeague')->middleware('upload.games');
 Route::get('/results/NHL', 'App\Http\Controllers\ResultsController@getNHLResults')->name('results.NHL')->middleware('upload.games');
 Route::get('/results/NBA', 'App\Http\Controllers\ResultsController@getNBAResults')->name('results.NBA')->middleware('upload.games');
 Route::post('/results/add', 'App\Http\Controllers\ResultsController@submit')->name('results.submit');
 Route::get('/results/add/{league}/{game}', 'App\Http\Controllers\ResultsController@add')->name('results.add');
 Route::get('/results/{user}/{league}', 'App\Http\Controllers\ResultsController@league')->name('results.league');
-Route::get('/results/PL/{matchDay}', 'App\Http\Controllers\ResultsController@getPLResult')->name('results.premierLeague')->middleware('upload.games');
 Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/results', 'ResultsController');
 });
 //Games
 Route::get('/games/uploadNHL/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames')->middleware('upload.games');
-Route::get('/games/attach/NHL/{league}', 'App\Http\Controllers\GamesController@attachNHLGames')->name('games.attach')->middleware('upload.games');
+Route::get('/games/attach/NHL/{league}', 'App\Http\Controllers\GamesController@attachNHLGames')->name('games.attachNHL')->middleware('upload.games');
 Route::get('/games/uploadNBA/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNBAGames')->name('games.uploadNBAGames')->middleware('upload.games');
 Route::get('/games/testNBA/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@testNBATime')->name('games.testNBATime')->middleware('upload.games');
-Route::get('/games/attach/NBA/{league}', 'App\Http\Controllers\GamesController@attachNBAGames')->name('games.attach')->middleware('upload.games');
+Route::get('/games/attach/NBA/{league}', 'App\Http\Controllers\GamesController@attachNBAGames')->name('games.attachNBA')->middleware('upload.games');
 Route::post('/games/{game}/delete', 'App\Http\Controllers\GamesController@destroy')->name('games.delete');
+Route::get('/games/uploadPL/{matchDay}', 'App\Http\Controllers\GamesController@uploadPLGames')->name('games.uploadPLGames')->middleware('upload.games');
+Route::get('/games/attach/PL/{league}', 'App\Http\Controllers\GamesController@attachPLGames')->name('games.attachPL')->middleware('upload.games');
