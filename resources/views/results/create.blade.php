@@ -16,7 +16,7 @@
       {{Form::number('away_team_points', '', ['class' => 'form-control', 'min'=>0]);}}
     </div>
     <div>
-      {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
+      {{Form::submit('Pievienot', ['class' => 'btn btn-primary'])}}
     </div>
   {!! Form::close() !!}
 @endsection

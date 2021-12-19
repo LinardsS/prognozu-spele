@@ -33,7 +33,7 @@
 </div>
 
 <div>
-  {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
+  {{Form::submit('Pievienot', ['class' => 'btn btn-primary'])}}
 </div>
 {!! Form::close() !!}
 @endsection

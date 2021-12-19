@@ -22,7 +22,7 @@
     </div>
 
     <div>
-      {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
+      {{Form::submit('Izveidot', ['class' => 'btn btn-primary'])}}
     </div>
   {!! Form::close() !!}
 @endsection
