@@ -23,7 +23,12 @@
       {{Form::label('predictionType', 'Prognožu veids');}}
       {{Form::select('predictionType', array('Win' => 'Uzvarētājs', 'Score' => 'Rezultāts'));}}
     </div>
-
+    <div class="form-group">
+      {{Form::label('leagueSelect', 'Automātiska spēļu pievienošana');}}
+      <label for="">NHL</label> <input type="checkbox" name="leagues[]" value="1"/>
+      <label for="">NBA </label> <input type="checkbox" name="leagues[]" value="2"/>
+      <label for="">Premjerlīga </label><input type="checkbox" name="leagues[]" value="3"/>
+    </div>
     <div>
       {{Form::submit('Izveidot', ['class' => 'btn btn-primary'])}}
     </div>

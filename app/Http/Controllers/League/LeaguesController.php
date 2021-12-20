@@ -138,6 +138,7 @@ class LeaguesController extends Controller
         'private' => 'required',
         'predictionType' => 'required'
       ]);
+
       // Create new league
       $league = new League;
       $league->name = $request->input('name');
@@ -156,6 +157,25 @@ class LeaguesController extends Controller
 
       //add creator of league to league
       $league->users()->save($user);
+      //add default league games(NHL, NBA, PL) if user has selected them
+      if($request->has('leagues')){
+        //get newly created league to which the games will get attached
+        $newLeague = League::where('name', $request->input('name'))->first();
+        $newLeagueId = $newLeague->id;
+        $leagues = $request->input('leagues');
+        if(in_array("1", $leagues)){      // NHL
+          //add NHL
+          app('App\Http\Controllers\GamesController')->attachNHLGames($newLeagueId);
+        }
+        if(in_array("2", $leagues)){ // NBA
+          //add NBA
+          app('App\Http\Controllers\GamesController')->attachNBAGames($newLeagueId);
+        }
+        if(in_array("3", $leagues)){
+          //add PL
+          app('App\Http\Controllers\GamesController')->attachPLGames($newLeagueId);
+        }
+      }
       //Redirect
       return redirect()->route('leagues.index')->withSuccess('Līga veiksmīgi izveidota');
     }
