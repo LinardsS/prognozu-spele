@@ -267,4 +267,11 @@ class LeaguesController extends Controller
       $games = $league->games()->where('ended', 1)->orderBy('start_time','desc')->paginate(20);
       return view('leagues.results')->with(['league' => $league, 'games' => $games]);
     }
+
+    public function detachGame(League $league, $game_id)
+    {
+      $game = Game::where('id', $game_id)->first();
+      $league->games()->detach($game);
+      return redirect()->back();
+    }
 }

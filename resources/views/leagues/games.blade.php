@@ -53,6 +53,8 @@
           @csrf
           <td><button type="submit" class="btn btn-danger float-left">Dzēst spēli</button></td>
         </form>
+        @elseif(auth()->user()->isLeagueOwner($league->id))
+          <td><a href="{{route('leagues.detachGame', ['game' => $game, 'league' => $league])}}"><button type="button" class="btn btn-danger float-left">Dzēst spēli</button></a></td>
         @endif
       </tr>
     @endforeach

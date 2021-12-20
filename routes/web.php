@@ -41,6 +41,8 @@ Route::get('/leagues/{league}/games/add', 'App\Http\Controllers\League\LeaguesCo
 Route::post('/leagues/submitGame', 'App\Http\Controllers\League\LeaguesController@submitGame')->name('leagues.submitGame');
 Route::post('/leagues/{league}/delete/{user}', 'App\Http\Controllers\League\LeaguesController@deleteUser')->name('leagues.deleteUser');
 Route::get('/leagues/{league}/edit', 'App\Http\Controllers\League\LeaguesController@edit')->name('leagues.edit')->middleware('edit.league');
+Route::get('/leagues/{league}/detach/{game}', 'App\Http\Controllers\League\LeaguesController@detachGame')->name('leagues.detachGame')->middleware('edit.league');
+
 
 Route::namespace('App\Http\Controllers\League')->group(function(){
   Route::resource('/leagues', 'LeaguesController', ['except' => ['edit']]);
