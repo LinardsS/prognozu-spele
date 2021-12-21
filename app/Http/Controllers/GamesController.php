@@ -58,7 +58,7 @@ class GamesController extends Controller
         return redirect()->route('home')->withErrors(["msg" => "Šai līgai jau ir pievienotas NHL spēles!"]);
       }
     }
-
+    //S-004
     public function uploadNBAGames($startDate, $endDate)
     {
       $gamesCounter = 0;
@@ -139,8 +139,8 @@ class GamesController extends Controller
 
         return redirect()->back()->withSuccess('Spēle dzēsta veiksmīgi!');
     }
-    
-    //S-00
+
+    //S-005
     public function attachNBAGames($league)
     {
       $league = League::where('id',$league)->first();
@@ -159,7 +159,7 @@ class GamesController extends Controller
         return redirect()->route('home')->withErrors(["msg" => "Šai līgai jau ir pievienotas NBA spēles!"]);
       }
     }
-
+    //S-006
     public function uploadPLGames($matchDay){
       $gamesCounter = 0;
       $authKey = "5dd4dc55b02c40888d7fba33f492599b";
@@ -186,7 +186,7 @@ class GamesController extends Controller
       }
       return 0;
     }
-
+    //S-007
     public function attachPLGames($league)
     {
       $league = League::where('id',$league)->first();
