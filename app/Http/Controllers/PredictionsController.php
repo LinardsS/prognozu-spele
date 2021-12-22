@@ -106,20 +106,48 @@ class PredictionsController extends Controller
     //P-001
     public function submit(Request $request)
     {
-      foreach ($request->input('points', []) as $id => $points) {
-        $prediction = Prediction::where(['game_id' => $id, 'user_id' => $request->user_id, 'league_id' => $request->league_id])->first();
-        if($prediction){
-          Prediction::where(['game_id' => $id, 'user_id' => $request->user_id, 'league_id' => $request->league_id])->update($points);
+      //predictions for "Score" type leagues
+      if($request->input('predictionType') == "Score"){
+        foreach ($request->input('points', []) as $id => $points) {
+          $prediction = Prediction::where(['game_id' => $id, 'user_id' => $request->user_id, 'league_id' => $request->league_id])->first();
+          if($prediction){
+            Prediction::where(['game_id' => $id, 'user_id' => $request->user_id, 'league_id' => $request->league_id])->update($points);
+          }
+          else{
+            if($points['home_team_points'] != null && $points['away_team_points'] != null){
+              $prediction = new Prediction;
+              $prediction->home_team_points = $points['home_team_points'];
+              $prediction->away_team_points = $points['away_team_points'];
+              $prediction->user_id = $request->user_id;
+              $prediction->league_id = $request->league_id;
+              $prediction->game_id = $id;
+              $prediction->save();
+            }
+          }
         }
-        else{
-          if($points['home_team_points'] != null && $points['away_team_points'] != null){
-            $prediction = new Prediction;
-            $prediction->home_team_points = $points['home_team_points'];
-            $prediction->away_team_points = $points['away_team_points'];
-            $prediction->user_id = $request->user_id;
-            $prediction->league_id = $request->league_id;
-            $prediction->game_id = $id;
-            $prediction->save();
+      }
+      else{
+        foreach ($request->input('winner', []) as $id => $winner) {
+          $prediction = Prediction::where(['game_id' => $id, 'user_id' => $request->user_id, 'league_id' => $request->league_id])->first();
+          if($prediction){
+            Prediction::where(['game_id' => $id, 'user_id' => $request->user_id, 'league_id' => $request->league_id])->update($points);
+          }
+          else{
+            if($winner != null){
+              $prediction = new Prediction;
+              if($winner[0] == 1){
+                $prediction->home_team_points = 1;
+                $prediction->away_team_points = 0;
+              }
+              else if($winner[0] == 0){
+                $prediction->home_team_points = 0;
+                $prediction->away_team_points = 1;
+              }
+              $prediction->user_id = $request->user_id;
+              $prediction->league_id = $request->league_id;
+              $prediction->game_id = $id;
+              $prediction->save();
+            }
           }
         }
       }
