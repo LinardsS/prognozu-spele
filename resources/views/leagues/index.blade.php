@@ -50,10 +50,8 @@
         <th scope="col">Līgas apraksts</th>
       </tr>
     </thead>
-
     <tbody>
       @foreach($leagues as $league)
-        @if($league->private != true)
         <tr>
           <td>
             <a href="{{route('leagues.show', $league)}}">
@@ -62,9 +60,9 @@
           </td>
           <td>{{$league->description}}</td>
         </tr>
-        @endif
       @endforeach
     </tbody>
   </table>
+  {{$leagues->links()}}
   </div>
 @endsection

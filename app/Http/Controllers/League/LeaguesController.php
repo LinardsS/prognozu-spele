@@ -21,7 +21,7 @@ class LeaguesController extends Controller
      */
     public function index()
     {
-        $leagues = League::all();
+        $leagues = League::where('private', false)->paginate(15);
         $user = auth()->user();
         return view('leagues.index')->with(['leagues' => $leagues, 'user' => $user]);
     }
