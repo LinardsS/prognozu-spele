@@ -248,6 +248,7 @@ class ResultsController extends Controller
       $response = Http::withHeaders(['X-Auth-Token' => $authKey])->get('http://api.football-data.org/v2/competitions/PL/matches/?dateFrom=' . $startDate. '&dateTo=' . $endDate);
       $responseObj = json_decode($response);
       $matches = $responseObj->matches;
+      $gameCounter = 0;
       foreach($matches as $match){
         $game_pk = $match->id;
         $status = $match->status;
