@@ -72,3 +72,4 @@ Route::get('/games/attach/NBA/{league}', 'App\Http\Controllers\GamesController@a
 Route::post('/games/{game}/delete', 'App\Http\Controllers\GamesController@destroy')->name('games.delete');
 Route::get('/games/uploadPL/{matchDay}', 'App\Http\Controllers\GamesController@uploadPLGames')->name('games.uploadPLGames')->middleware('upload.games');
 Route::get('/games/attach/PL/{league}', 'App\Http\Controllers\GamesController@attachPLGames')->name('games.attachPL')->middleware('upload.games');
+Route::get('/games/test/{leagueType}', 'App\Http\Controllers\GamesController@test')->name('games.test');

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\League;
 use App\Models\Game;
 use Illuminate\Http\Request;
+use DB;
 
 class LeaguesController extends Controller
 {
@@ -166,14 +167,20 @@ class LeaguesController extends Controller
         if(in_array("1", $leagues)){      // NHL
           //add NHL
           app('App\Http\Controllers\GamesController')->attachNHLGames($newLeagueId);
+          //attach league to league_association table which will ensure NHL game upload in future
+          DB::insert('insert into league_association (league_id, league_type) values (:id, :type)', ['id' => $newLeagueId, 'type' => 'NHL' ]);
         }
         if(in_array("2", $leagues)){ // NBA
           //add NBA
           app('App\Http\Controllers\GamesController')->attachNBAGames($newLeagueId);
+          //attach league to league_association table which will ensure NBA game upload in future
+          DB::insert('insert into league_association (league_id, league_type) values (:id, :type)', ['id' => $newLeagueId, 'type' => 'NBA' ]);
         }
         if(in_array("3", $leagues)){
           //add PL
           app('App\Http\Controllers\GamesController')->attachPLGames($newLeagueId);
+          //attach league to league_association table which will ensure PL game upload in future
+          DB::insert('insert into league_association (league_id, league_type) values (:id, :type)', ['id' => $newLeagueId, 'type' => 'PL' ]);
         }
       }
       //Redirect

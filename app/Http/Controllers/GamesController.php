@@ -6,6 +6,7 @@ use App\Models\Game;
 use App\Models\League;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use DB;
 
 
 class GamesController extends Controller
@@ -36,6 +37,13 @@ class GamesController extends Controller
                         'ended'      => false,
                         'external_game_id' => $gameId,
                         'league_type' => "NHL"]);
+        }
+      }
+      //upload new games to leagues which are associated with NHL games
+      $leagues = $this->getAssociatedLeagues('NHL');
+      if($leagues){
+        foreach($leagues as $league){
+          $this->voidAttachNHLGames($league->league_id);
         }
       }
     }
@@ -130,6 +138,13 @@ class GamesController extends Controller
           }
         }
       }
+      //upload new games to leagues which are associated with NBA games
+      $leagues = $this->getAssociatedLeagues('NBA');
+      if($leagues){
+        foreach($leagues as $league){
+          $this->voidAttachNBAGames($league->league_id);
+        }
+      }
       return redirect()->route('home')->withSuccess('Veiksmīgi ielādētas ' . $gamesCounter . ' NBA spēles!');
     }
 
@@ -186,6 +201,13 @@ class GamesController extends Controller
         }
       }
       if($gamesCounter != 0){
+        //upload new games to leagues which are associated with PL games
+        $leagues = $this->getAssociatedLeagues('PL');
+        if($leagues){
+          foreach($leagues as $league){
+            $this->voidAttachPLGames($league->league_id);
+          }
+        }
         return redirect()->route('home')->withSuccess('Veiksmīgi ielādētas ' . $gamesCounter . ' PL spēles');
       }
       else{
@@ -210,5 +232,44 @@ class GamesController extends Controller
       else{
         return redirect()->route('home')->withErrors(["msg" => "Šai līgai jau ir pievienotas PL spēles!"]);
       }
+    }
+
+    public function getAssociatedLeagues($leagueType)
+    {
+      $results = DB::select('select league_id from league_association where league_type = :type', ['type' => $leagueType]);
+      return $results;
+    }
+
+    public function voidAttachNHLGames($league)
+    {
+      $league = League::where('id',$league)->first();
+      $games = Game::where(['league_type' => 'NHL', 'ended' => 0])->get();
+      foreach($games as $game){
+          if (!$league->games()->where('game_id', '=', $game->id)->exists()) {
+            $league->games()->attach($game);
+          }
+        }
+    }
+
+    public function voidAttachNBAGames($league)
+    {
+      $league = League::where('id',$league)->first();
+      $games = Game::where(['league_type' => 'NBA', 'ended' => 0])->get();
+      foreach($games as $game){
+          if (!$league->games()->where('game_id', '=', $game->id)->exists()) {
+            $league->games()->attach($game);
+          }
+        }
+    }
+
+    public function voidAttachPLGames($league)
+    {
+      $league = League::where('id',$league)->first();
+      $games = Game::where(['league_type' => 'PL', 'ended' => 0])->get();
+      foreach($games as $game){
+          if (!$league->games()->where('game_id', '=', $game->id)->exists()) {
+            $league->games()->attach($game);
+          }
+        }
     }
 }
