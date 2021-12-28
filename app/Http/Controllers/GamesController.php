@@ -181,10 +181,16 @@ class GamesController extends Controller
                           'ended'      => false,
                           'external_game_id' => $game_id,
                           'league_type' => "PL"]);
+            $gamesCounter += 1;
           }
         }
       }
-      return 0;
+      if($gamesCounter != 0){
+        return redirect()->route('home')->withSuccess('Veiksmīgi ielādētas ' . $gamesCounter . ' PL spēles');
+      }
+      else{
+        return redirect()->route('home')->withErrors(["msg" => "Norādītajā MatchDay nav ielādējamo spēļu!"]);
+      }
     }
     //S-007
     public function attachPLGames($league)

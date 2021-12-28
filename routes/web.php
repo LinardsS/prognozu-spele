@@ -54,7 +54,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
   Route::resource('/predictions', 'PredictionsController');
 });
 //Results
-Route::get('/results/PL', 'App\Http\Controllers\ResultsController@getPLResults')->name('results.premierLeague')->middleware('upload.games');
+Route::get('/results/PL', 'App\Http\Controllers\ResultsController@getPLResults')->name('results.PL')->middleware('upload.games');
 Route::get('/results/NHL', 'App\Http\Controllers\ResultsController@getNHLResults')->name('results.NHL')->middleware('upload.games');
 Route::get('/results/NBA', 'App\Http\Controllers\ResultsController@getNBAResults')->name('results.NBA')->middleware('upload.games');
 Route::post('/results/add', 'App\Http\Controllers\ResultsController@submit')->name('results.submit');
