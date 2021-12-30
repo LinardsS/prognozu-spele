@@ -139,7 +139,7 @@ class ResultsController extends Controller
             $startDate = $game->gameDate;
             $startDate = $startDate . '2 hours';
             //check if result for this game has already been entered
-            if(!Result::where('game_id',$game_id)->first()){
+            if(!Result::where('game_id',$game_id)->first() && $game_id){
               //create new result entry in database
               Result::create(['home_team'      => $home_team,
                             'away_team'        => $away_team,
