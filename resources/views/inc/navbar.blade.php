@@ -21,6 +21,9 @@
         <li class="{{Request::is('contact') ? 'active' : ''}}">
           <a class="nav-link" href="/contact">Saziņa</a>
         </li>
+        <li class="{{Request::is('rules') ? 'active' : ''}}">
+          <a class="nav-link" href="/rules">Noteikumi</a>
+        </li>
         @if(Auth::check())
           @if(auth()->user()->hasRole('admin'))
           <li class="{{Request::is('admin/users') ? 'active' : ''}}">
