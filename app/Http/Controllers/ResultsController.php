@@ -217,7 +217,7 @@ class ResultsController extends Controller
           $game_pk = $game['id'];
           $game_id = Game::where('external_game_id', $game_pk)->value('id');
           //check if result for this game has already been entered
-          if(!Result::where('game_id',$game_id)->first()){
+          if(!Result::where('game_id',$game_id)->first() && $game_id){
             //create new result entry in database
             Result::create(['home_team'      => $home_team,
                           'away_team'        => $away_team,
@@ -261,7 +261,7 @@ class ResultsController extends Controller
           $away_team_points = $match->score->fullTime->awayTeam;
           $game_id = Game::where('external_game_id', $game_pk)->value('id');
           //check if result for this game has already been entered
-          if(!Result::where('game_id',$game_id)->first()){
+          if(!Result::where('game_id',$game_id)->first() && $game_id){
             //create new result entry in database
             Result::create(['home_team'      => $home_team,
                           'away_team'        => $away_team,
