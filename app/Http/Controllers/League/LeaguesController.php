@@ -38,17 +38,6 @@ class LeaguesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-      //
-    }
-
-    /**
      * LE-003
      * Display the specified resource.
      *
@@ -106,17 +95,6 @@ class LeaguesController extends Controller
           $request->session()->flash('error', 'Notikusi kļūda rediģēšanas laikā!');
         }
         return redirect()->route('leagues.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        //
     }
     //LE-010
     public function join(Request $request, League $league)

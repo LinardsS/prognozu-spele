@@ -45,13 +45,13 @@ Route::get('/leagues/{league}/detach/{game}', 'App\Http\Controllers\League\Leagu
 
 
 Route::namespace('App\Http\Controllers\League')->group(function(){
-  Route::resource('/leagues', 'LeaguesController', ['except' => ['edit']]);
+  Route::resource('/leagues', 'LeaguesController', ['except' => ['edit', 'store', 'destroy']]);
 });
 //Predictions
 Route::post('/predictions/submit', 'App\Http\Controllers\PredictionsController@submit')->name('predictions.submit');
 Route::get('/predictions/{league}', 'App\Http\Controllers\PredictionsController@league')->name('predictions.league')->middleware('view.predictions');
 Route::namespace('App\Http\Controllers')->group(function(){
-  Route::resource('/predictions', 'PredictionsController');
+  Route::resource('/predictions', 'PredictionsController', ['except' => ['edit', 'store', 'destroy', 'update', 'show', 'create']]);
 });
 //Results
 Route::get('/results/PL', 'App\Http\Controllers\ResultsController@getPLResults')->name('results.PL')->middleware('upload.games');
@@ -61,7 +61,7 @@ Route::post('/results/add', 'App\Http\Controllers\ResultsController@submit')->na
 Route::get('/results/add/{league}/{game}', 'App\Http\Controllers\ResultsController@add')->name('results.add');
 Route::get('/results/{user}/{league}', 'App\Http\Controllers\ResultsController@league')->name('results.league');
 Route::namespace('App\Http\Controllers')->group(function(){
-  Route::resource('/results', 'ResultsController');
+  Route::resource('/results', 'ResultsController', ['except' => ['edit', 'store', 'destroy', 'update', 'show']]);
 });
 //Games
 Route::get('/games/uploadNHL/{startDate}/{endDate}', 'App\Http\Controllers\GamesController@uploadNHLGames')->name('games.uploadNHLGames')->middleware('upload.games');
