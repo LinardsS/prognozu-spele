@@ -101,7 +101,7 @@ class ResultsController extends Controller
       $games = $league->games()->where('ended',1)->orderBy('start_time', 'desc')->paginate(10);
       return view('results.league')->with(['predictions' => $predictions, 'league' => $league, 'games' => $games, 'user' => $user]);
     }
-
+    //R-001
     public function submit(Request $request)
     {
       $league = League::where('id', $request->league_id)->first();
@@ -126,7 +126,7 @@ class ResultsController extends Controller
         return redirect()->route('leagues.games', $league)->withErrors(['msg' => 'Šai spēlei rezultātu nevar pievienot!']);
       }
     }
-
+    //R-005
     public function getNBAResults()
     {
       //league ID=6 will hold only NBA games
@@ -169,7 +169,7 @@ class ResultsController extends Controller
       }
       return redirect()->route('home')->withSuccess('Rezultāti veiksmīgi ielādēti ' . $gameCounter . ' NBA spēlēm!');
     }
-
+    //R-006
     public function getPLResults()
     {
       $authKey = "5dd4dc55b02c40888d7fba33f492599b";
