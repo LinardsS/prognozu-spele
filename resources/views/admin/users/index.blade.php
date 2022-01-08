@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Users</div>
+                <div class="card-header">Lietotāji</div>
 
                 <div class="card-body">
 
@@ -13,10 +13,10 @@
                       <thead>
                         <tr>
                           <th scope="col">#</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Email</th>
-                          <th scope="col">Roles</th>
-                          <th scope="col">Actions</th>
+                          <th scope="col">Vārds</th>
+                          <th scope="col">E-pasts</th>
+                          <th scope="col">Lomas</th>
+                          <th scope="col"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -29,15 +29,15 @@
                             <td>
                               @can('edit-users')
                                 <a href="{{route('admin.users.edit', $user->id)}}">
-                                  <button type="button" class="btn btn-primary float-left">Edit</button>
+                                  <button type="button" class="btn btn-primary float-left">Rediģēt</button>
                                 </a>
                               @endcan
                               @can('delete-users')
                               <form class="" action="{{ route('admin.users.destroy', $user) }}" method="post">
                                 @csrf
                                 {{ method_field('DELETE') }}
-                                 <button type="submit" class="btn btn-danger">
-                                   Delete
+                                 <button type="submit" class="btn btn-danger" style="width:80px;">
+                                   Dzēst
                                  </button>
                               </form>
                               @endcan
