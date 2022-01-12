@@ -272,4 +272,12 @@ class GamesController extends Controller
           }
         }
     }
+    //test function used for verifying various outputs
+    public function test($leagueType)
+    {
+    /*  $leagues = $this->getAssociatedLeagues($leagueType);
+      $league_id = $leagues[1]->league_id;
+      $league = League::find($league_id);
+      return $league;*/
+    }
 }
